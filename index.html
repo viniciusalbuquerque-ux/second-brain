@@ -4,28 +4,28 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Second Brain — Vinny & Wes Flooring</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 :root{
-  --bg:#0b0d0b;--surface:#111311;--surface2:#181c18;--surface3:#1e231e;
-  --border:#232823;--border2:#2e352e;
-  --accent:#b8f06a;--accent-dim:rgba(184,240,106,.12);
-  --teal:#6af0c8;--teal-dim:rgba(106,240,200,.1);
-  --orange:#f0a86a;--orange-dim:rgba(240,168,106,.1);
-  --blue:#6aaaf0;--blue-dim:rgba(106,170,240,.1);
-  --red:#f06a6a;--red-dim:rgba(240,106,106,.1);
-  --purple:#c06af0;--purple-dim:rgba(192,106,240,.1);
-  --text:#dfe8df;--text2:#748074;--text3:#3e4a3e;
+  --bg:#f4f6f4;--surface:#ffffff;--surface2:#f0f3f0;--surface3:#e8ede8;
+  --border:#dde3dd;--border2:#c8d2c8;
+  --accent:#3a8a00;--accent-dim:rgba(58,138,0,.10);
+  --teal:#0a7a5a;--teal-dim:rgba(10,122,90,.09);
+  --orange:#c05a00;--orange-dim:rgba(192,90,0,.09);
+  --blue:#1a5aaa;--blue-dim:rgba(26,90,170,.09);
+  --red:#b02020;--red-dim:rgba(176,32,32,.09);
+  --purple:#6a20aa;--purple-dim:rgba(106,32,170,.09);
+  --text:#1a221a;--text2:#4a5e4a;--text3:#8a9e8a;
   --radius:10px;
-  --F:'Syne',sans-serif;--FB:'DM Sans',sans-serif;--FM:'DM Mono',monospace;
+  --F:-apple-system,'Segoe UI',system-ui,sans-serif;
+  --FB:-apple-system,'Segoe UI',system-ui,sans-serif;
+  --FM:'SF Mono','Fira Code','Consolas',monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 html,body{height:100%;overflow:hidden;}
 body{background:var(--bg);color:var(--text);font-family:var(--FB);font-size:14px;display:flex;height:100vh;}
 
 /* ═══ SIDEBAR ═══ */
-.sidebar{width:216px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease;z-index:100;}
+.sidebar{width:216px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease;z-index:100;box-shadow:2px 0 12px rgba(0,0,0,.06);}
 .logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
 .logo-mark{font-family:var(--F);font-weight:800;font-size:18px;color:var(--accent);letter-spacing:-.5px;display:flex;align-items:center;gap:6px;}
 .logo-sub{font-family:var(--FM);font-size:9px;color:var(--text3);letter-spacing:1.2px;text-transform:uppercase;margin-top:3px;}
@@ -88,8 +88,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--FB);font-size:14px
 .col-name{font-family:var(--FM);font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);flex:1;}
 .col-count{font-family:var(--FM);font-size:10px;color:var(--text3);}
 .cards{display:flex;flex-direction:column;gap:7px;}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all .15s;position:relative;}
-.card:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 18px rgba(0,0,0,.4);}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all .15s;position:relative;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.card:hover{border-color:var(--border2);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.12);}
 .type-tag{font-family:var(--FM);font-size:8px;text-transform:uppercase;letter-spacing:.8px;display:inline-block;padding:2px 6px;border-radius:4px;margin-bottom:6px;}
 .tr{background:rgba(184,240,106,.1);color:var(--accent);}.tb{background:rgba(106,240,200,.1);color:var(--teal);}.tc{background:rgba(240,168,106,.1);color:var(--orange);}
 .card-name{font-weight:600;font-size:13px;margin-bottom:3px;}
@@ -104,8 +104,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--FB);font-size:14px
 
 /* ═══ JOBS ═══ */
 .jobs-grid{display:flex;flex-direction:column;gap:9px;}
-.job-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;gap:14px;align-items:flex-start;}
-.job-card:hover{border-color:var(--border2);box-shadow:0 2px 14px rgba(0,0,0,.3);}
+.job-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:all .15s;display:flex;gap:14px;align-items:flex-start;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+.job-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(0,0,0,.12);}
 .job-status-bar{width:3px;border-radius:4px;flex-shrink:0;align-self:stretch;min-height:44px;}
 .job-body{flex:1;min-width:0;}
 .job-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:5px;}
@@ -268,7 +268,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--FB);font-size:14px
 /* ═══ MODAL ═══ */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:center;justify-content:center;padding:14px;}
 .overlay.open{display:flex;}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;animation:up .2s ease;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;animation:up .2s ease;box-shadow:0 8px 40px rgba(0,0,0,.15);}
 @keyframes up{from{transform:translateY(14px);opacity:0;}to{transform:translateY(0);opacity:1;}}
 .modal-head{padding:17px 21px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .modal-title{font-family:var(--F);font-weight:700;font-size:15px;}
@@ -332,15 +332,16 @@ textarea{resize:vertical;min-height:70px;}
 .login-logo{text-align:center;margin-bottom:36px;}
 .login-logo-mark{font-family:var(--F);font-weight:800;font-size:28px;color:var(--accent);letter-spacing:-.5px;}
 .login-logo-sub{font-family:var(--FM);font-size:10px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;}
-.login-title{font-family:var(--F);font-weight:700;font-size:19px;margin-bottom:6px;text-align:center;}
+.login-title{font-family:var(--F);font-weight:700;font-size:19px;margin-bottom:6px;text-align:center;color:var(--text);}
 .login-sub{font-size:12.5px;color:var(--text3);text-align:center;margin-bottom:28px;}
 .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
 .profile-card{
-  background:var(--surface);border:1px solid var(--border);
+  background:var(--surface);border:2px solid var(--border);
   border-radius:12px;padding:18px 14px;cursor:pointer;
   transition:all .2s;text-align:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
-.profile-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.profile-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.12);}
 .profile-card.selected{border-color:var(--accent);background:var(--accent-dim);}
 .profile-avatar{
   width:46px;height:46px;border-radius:50%;
@@ -348,17 +349,18 @@ textarea{resize:vertical;min-height:70px;}
   font-family:var(--F);font-weight:700;font-size:18px;
   margin:0 auto 10px;
 }
-.profile-name{font-family:var(--F);font-weight:700;font-size:14px;margin-bottom:2px;}
+.profile-name{font-family:var(--F);font-weight:700;font-size:14px;margin-bottom:2px;color:var(--text);}
 .profile-role{font-size:11px;color:var(--text3);}
 .login-pin-wrap{margin-bottom:16px;}
 .login-pin-label{font-family:var(--FM);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.login-pin{text-align:center;font-size:22px;letter-spacing:8px;font-family:var(--FM);}
+.login-pin{text-align:center;font-size:22px;letter-spacing:8px;font-family:var(--FM);color:var(--text);}
 .login-error{font-size:12px;color:var(--red);text-align:center;margin-bottom:10px;min-height:18px;}
 .pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
 .pin-btn{
   background:var(--surface);border:1px solid var(--border);
   border-radius:9px;padding:14px;font-family:var(--F);font-weight:700;font-size:18px;
   cursor:pointer;transition:all .15s;color:var(--text);
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
 }
 .pin-btn:hover{background:var(--surface2);border-color:var(--border2);}
 .pin-btn:active{transform:scale(.95);}
@@ -369,17 +371,16 @@ textarea{resize:vertical;min-height:70px;}
   display:flex;align-items:center;gap:7px;
   padding:4px 10px 4px 5px;
   border-radius:20px;border:1px solid var(--border);
-  cursor:pointer;transition:all .15s;
+  cursor:pointer;transition:all .15s;background:var(--surface);
 }
 .profile-pill:hover{background:var(--surface2);}
 .profile-pill-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--F);font-weight:700;font-size:10px;}
-.profile-pill-name{font-size:12px;font-weight:500;}
-.profile-pill-role{font-size:10px;color:var(--text3);}
+.profile-pill-name{font-size:12px;font-weight:500;color:var(--text);}
 
 /* ═══ FIELD-ONLY LOCK ═══ */
 .nav-item.locked{opacity:.3;pointer-events:none;}
 .locked-notice{
-  background:var(--orange-dim);border:1px solid rgba(240,168,106,.2);
+  background:var(--orange-dim);border:1px solid rgba(192,90,0,.2);
   border-radius:var(--radius);padding:12px 16px;
   font-size:12.5px;color:var(--orange);margin-bottom:16px;
   display:none;
@@ -401,22 +402,22 @@ textarea{resize:vertical;min-height:70px;}
 
     <div class="profile-grid" id="profileGrid">
       <div class="profile-card" onclick="selectProfile('vinny')" id="pc-vinny">
-        <div class="profile-avatar" style="background:rgba(184,240,106,.15);color:#b8f06a;">V</div>
+        <div class="profile-avatar" style="background:rgba(58,138,0,.12);color:#2a6a00;">V</div>
         <div class="profile-name">Vinny</div>
         <div class="profile-role">Owner · Full Access</div>
       </div>
       <div class="profile-card" onclick="selectProfile('carlos')" id="pc-carlos">
-        <div class="profile-avatar" style="background:rgba(106,240,200,.15);color:#6af0c8;">C</div>
+        <div class="profile-avatar" style="background:rgba(10,122,90,.12);color:#0a7a5a;">C</div>
         <div class="profile-name">Carlos</div>
         <div class="profile-role">Lead Installer</div>
       </div>
       <div class="profile-card" onclick="selectProfile('pedro')" id="pc-pedro">
-        <div class="profile-avatar" style="background:rgba(240,168,106,.15);color:#f0a86a;">P</div>
+        <div class="profile-avatar" style="background:rgba(192,90,0,.12);color:#c05a00;">P</div>
         <div class="profile-name">Pedro</div>
         <div class="profile-role">Installer</div>
       </div>
       <div class="profile-card" onclick="selectProfile('marcos')" id="pc-marcos">
-        <div class="profile-avatar" style="background:rgba(106,170,240,.15);color:#6aaaf0;">M</div>
+        <div class="profile-avatar" style="background:rgba(26,90,170,.12);color:#1a5aaa;">M</div>
         <div class="profile-name">Marcos</div>
         <div class="profile-role">Installer</div>
       </div>
@@ -487,7 +488,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="search-wrap" id="searchWrap" style="display:none"><span class="search-icon">🔍</span><input type="text" placeholder="Search..." id="searchInput" oninput="filterLeads()"/></div>
       <button class="btn btn-primary" id="topBtn" onclick="openNewLead()">＋ New Lead</button>
       <div class="profile-pill" onclick="logout()" id="topProfilePill" title="Click to switch profile">
-        <div class="profile-pill-avatar" id="topProfileAvatar" style="background:rgba(184,240,106,.15);color:#b8f06a;">V</div>
+        <div class="profile-pill-avatar" id="topProfileAvatar" style="background:rgba(58,138,0,.12);color:#2a6a00;">V</div>
         <div><div class="profile-pill-name" id="topProfileName">Vinny</div></div>
       </div>
     </div>
@@ -756,7 +757,11 @@ const JOB_ST=[{id:'scheduled',label:'Scheduled',color:'#6aaaf0'},{id:'active',la
 const PIPE_COLS=[{id:'new',label:'New Lead',color:'#3e4a3e'},{id:'quoted',label:'Quote Sent',color:'#b8f06a'},{id:'followup',label:'Follow-up',color:'#f0a86a'},{id:'approved',label:'Approved',color:'#6af0c8'},{id:'scheduled',label:'Scheduled',color:'#6aaaf0'}];
 const CL=['Material ordered','Material delivered','Area prepared','Other trades done','Client confirmed start','Acclimation complete','Job started','Job completed','Client signed off'];
 const PRICES={'Hardwood Install':2.50,'Hardwood Sand & Finish':2.50,'LVP Install':1.90,'Tile Install':4.50,'Stairs - Oak':185,'Stairs - Carpet':55,'Demo / Remove Old Floor':0.80,'Subfloor Repair':3.50,'Transition Strips':45,'Baseboard Install':2.80};
-const TEAM=[{name:'Carlos',role:'Lead Installer',color:'#b8f06a',bg:'rgba(184,240,106,.15)'},{name:'Pedro',role:'Installer',color:'#6af0c8',bg:'rgba(106,240,200,.15)'},{name:'Marcos',role:'Installer',color:'#f0a86a',bg:'rgba(240,168,106,.15)'}];
+const TEAM=[
+  {name:'Carlos',role:'Lead Installer',color:'#0a7a5a',bg:'rgba(10,122,90,.12)'},
+  {name:'Pedro', role:'Installer',     color:'#c05a00',bg:'rgba(192,90,0,.12)'},
+  {name:'Marcos',role:'Installer',     color:'#1a5aaa',bg:'rgba(26,90,170,.12)'},
+];
 
 let leads=[
   {id:1,name:'Michael Torres',phone:'(305) 555-0101',email:'michael@email.com',type:'residential',source:'Instagram',service:'Hardwood',value:8500,address:'Coral Gables, FL — 2,100 SF',notes:'Wants light oak.',priority:'high',status:'approved',created:'Apr 14'},
@@ -809,6 +814,11 @@ const TEMPLATES={
 // NAV
 // ══════════════════════════════════════════
 function go(view){
+  // Auth guard — field users only see field view
+  const p = PROFILES[currentProfile];
+  if (p && p.access === 'field' && OWNER_ONLY_NAVS.includes(view)) {
+    view = 'field';
+  }
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
@@ -1283,10 +1293,10 @@ function refreshAll(){
 // AUTH / PROFILES
 // ══════════════════════════════════════════
 const PROFILES = {
-  vinny:  { name:'Vinny',  role:'Owner · Full Access', pin:'1234', access:'owner',  color:'#b8f06a', bg:'rgba(184,240,106,.15)', initial:'V' },
-  carlos: { name:'Carlos', role:'Lead Installer',       pin:'1111', access:'field',  color:'#6af0c8', bg:'rgba(106,240,200,.15)',  initial:'C' },
-  pedro:  { name:'Pedro',  role:'Installer',            pin:'2222', access:'field',  color:'#f0a86a', bg:'rgba(240,168,106,.15)',  initial:'P' },
-  marcos: { name:'Marcos', role:'Installer',            pin:'3333', access:'field',  color:'#6aaaf0', bg:'rgba(106,170,240,.15)',  initial:'M' },
+  vinny:  { name:'Vinny',  role:'Owner · Full Access', pin:'1234', access:'owner',  color:'#2a6a00', bg:'rgba(58,138,0,.12)',   initial:'V' },
+  carlos: { name:'Carlos', role:'Lead Installer',       pin:'1111', access:'field',  color:'#0a7a5a', bg:'rgba(10,122,90,.12)',   initial:'C' },
+  pedro:  { name:'Pedro',  role:'Installer',            pin:'2222', access:'field',  color:'#c05a00', bg:'rgba(192,90,0,.12)',    initial:'P' },
+  marcos: { name:'Marcos', role:'Installer',            pin:'3333', access:'field',  color:'#1a5aaa', bg:'rgba(26,90,170,.12)',   initial:'M' },
 };
 
 let currentProfile = null;
@@ -1406,160 +1416,89 @@ function logout() {
   });
 }
 
-// Guard: if field user tries to navigate to owner-only views
-const _originalGo = go;
-function go(view) {
-  const p = PROFILES[currentProfile];
-  if (p && p.access === 'field' && OWNER_ONLY_NAVS.includes(view)) {
-    // silently redirect to field
-    _originalGo('field');
-    return;
-  }
-  _originalGo(view);
-}
+// Auth guard is now built into go() above
 
 // ══════════════════════════════════════════
-// PDF EXPORT
+// PDF EXPORT — print window (no CDN needed)
 // ══════════════════════════════════════════
 function downloadPDF() {
   if (!estItems.length) { alert('Add at least one item to the estimate first.'); return; }
 
-  const client = document.getElementById('est_client').value.trim() || 'Client';
-  const addr   = document.getElementById('est_addr').value.trim()   || '';
+  const client   = document.getElementById('est_client').value.trim() || 'Client';
+  const addr     = document.getElementById('est_addr').value.trim()   || '';
   const subtotal = estItems.reduce((s, i) => s + i.total, 0);
-  const tax = subtotal * 0.07;
-  const total = subtotal + tax;
-  const deposit = total / 2;
-  const dateStr = new Date().toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+  const tax      = subtotal * 0.07;
+  const total    = subtotal + tax;
+  const deposit  = total / 2;
+  const dateStr  = new Date().toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'});
 
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'pt', format:'letter' });
-  const W = doc.internal.pageSize.getWidth();
-  let y = 0;
+  const rows = estItems.map(item => `
+    <tr>
+      <td><strong>${item.svc}</strong></td>
+      <td>${item.qty.toLocaleString()}</td>
+      <td>$${item.rate.toFixed(2)}</td>
+      <td class="right green"><strong>$${item.total.toLocaleString('en-US',{minimumFractionDigits:2})}</strong></td>
+    </tr>`).join('');
 
-  // ── Header band ──
-  doc.setFillColor(13, 15, 13);
-  doc.rect(0, 0, W, 90, 'F');
-  doc.setTextColor(184, 240, 106);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(22);
-  doc.text('SECOND BRAIN', 40, 38);
-  doc.setFontSize(9);
-  doc.setTextColor(100, 120, 100);
-  doc.setFont('helvetica', 'normal');
-  doc.text('VINNY & WES FLOORING', 40, 54);
-  doc.text('Licensed & Insured  ·  Miami, FL', 40, 67);
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+  <title>Estimate — ${client}</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:-apple-system,'Segoe UI',sans-serif;font-size:13px;color:#1a221a;background:#fff;padding:40px;}
+    .header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;padding-bottom:20px;border-bottom:2px solid #3a8a00;}
+    .brand{font-size:22px;font-weight:800;color:#3a8a00;letter-spacing:-0.5px;}
+    .brand-sub{font-size:9px;color:#8a9e8a;letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;}
+    .est-label{text-align:right;}
+    .est-label h2{font-size:18px;font-weight:700;color:#1a221a;}
+    .est-label p{font-size:11px;color:#8a9e8a;margin-top:3px;}
+    .client-box{background:#f4f6f4;border-radius:8px;padding:16px 20px;margin-bottom:24px;}
+    .client-box .lbl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8a9e8a;margin-bottom:4px;}
+    .client-box .name{font-size:16px;font-weight:700;}
+    .client-box .addr{font-size:12px;color:#4a5e4a;margin-top:2px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+    th{background:#f0f3f0;font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8a9e8a;padding:10px 12px;text-align:left;}
+    td{padding:11px 12px;border-bottom:1px solid #dde3dd;font-size:12.5px;}
+    tr:last-child td{border-bottom:none;}
+    .right{text-align:right;}
+    .green{color:#3a8a00;}
+    .totals{margin-left:auto;width:280px;margin-bottom:20px;}
+    .totals .row{display:flex;justify-content:space-between;padding:6px 0;font-size:12.5px;border-bottom:1px solid #dde3dd;}
+    .totals .row:last-child{border:none;}
+    .totals .row.big{font-size:15px;font-weight:700;padding:10px 0;}
+    .totals .row.big .val{color:#3a8a00;}
+    .totals .row.dep .val{color:#0a7a5a;}
+    .terms{background:#f4f6f4;border-radius:8px;padding:14px 18px;font-size:11px;color:#4a5e4a;line-height:1.7;}
+    .terms strong{color:#1a221a;display:block;margin-bottom:4px;}
+    .footer{margin-top:32px;text-align:center;font-size:10px;color:#8a9e8a;border-top:1px solid #dde3dd;padding-top:16px;}
+    @media print{body{padding:20px;}@page{margin:15mm;}}
+  </style></head><body>
+  <div class="header">
+    <div><div class="brand">🧠 Second Brain</div><div class="brand-sub">Vinny &amp; Wes Flooring · Licensed &amp; Insured</div></div>
+    <div class="est-label"><h2>ESTIMATE</h2><p>${dateStr}</p><p style="margin-top:2px;color:#c05a00;">Valid for 30 days</p></div>
+  </div>
+  <div class="client-box">
+    <div class="lbl">Prepared for</div>
+    <div class="name">${client}</div>
+    ${addr ? `<div class="addr">${addr}</div>` : ''}
+  </div>
+  <table>
+    <thead><tr><th>Service</th><th>Qty</th><th>Rate</th><th class="right">Total</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="totals">
+    <div class="row"><span>Subtotal</span><span>$${subtotal.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+    <div class="row"><span>Tax (7%)</span><span>$${tax.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+    <div class="row big"><span>TOTAL</span><span class="val">$${total.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+    <div class="row dep"><span>50% Deposit Due</span><span class="val">$${deposit.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+  </div>
+  <div class="terms"><strong>Terms &amp; Conditions</strong>50% deposit required to schedule. Balance due upon completion. Material lead time may vary. Price valid for 30 days. Licensed &amp; Insured.</div>
+  <div class="footer">Vinny &amp; Wes Flooring · Second Brain OS · Thank you for your business!</div>
+  <script>window.onload=function(){window.print();}<\/script>
+  </body></html>`;
 
-  // Estimate label top-right
-  doc.setTextColor(184, 240, 106);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.text('ESTIMATE', W - 40, 38, { align:'right' });
-  doc.setTextColor(100, 120, 100);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.text(dateStr, W - 40, 54, { align:'right' });
-  doc.text('Valid for 30 days', W - 40, 67, { align:'right' });
-
-  y = 110;
-
-  // ── Client block ──
-  doc.setFillColor(24, 28, 24);
-  doc.roundedRect(40, y, W - 80, 52, 4, 4, 'F');
-  doc.setTextColor(100, 120, 100);
-  doc.setFontSize(8);
-  doc.text('PREPARED FOR', 56, y + 16);
-  doc.setTextColor(220, 232, 220);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.text(client, 56, y + 32);
-  if (addr) {
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
-    doc.setTextColor(100, 120, 100);
-    doc.text(addr, 56, y + 45);
-  }
-
-  y += 72;
-
-  // ── Table header ──
-  doc.setFillColor(35, 40, 35);
-  doc.rect(40, y, W - 80, 22, 'F');
-  doc.setTextColor(116, 128, 116);
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
-  doc.text('SERVICE', 56, y + 14);
-  doc.text('QTY', 300, y + 14);
-  doc.text('RATE', 380, y + 14);
-  doc.text('TOTAL', W - 56, y + 14, { align:'right' });
-  y += 22;
-
-  // ── Line items ──
-  estItems.forEach((item, idx) => {
-    const rowBg = idx % 2 === 0 ? [17, 19, 17] : [20, 24, 20];
-    doc.setFillColor(...rowBg);
-    doc.rect(40, y, W - 80, 26, 'F');
-    doc.setTextColor(220, 232, 220);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
-    doc.text(item.svc, 56, y + 11);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(116, 128, 116);
-    doc.text(`${item.qty.toLocaleString()} units`, 300, y + 11);
-    doc.text(`$${item.rate.toFixed(2)}`, 380, y + 11);
-    doc.setTextColor(184, 240, 106);
-    doc.setFont('helvetica', 'bold');
-    doc.text(`$${item.total.toLocaleString('en-US', {minimumFractionDigits:2})}`, W - 56, y + 11, { align:'right' });
-    y += 26;
-  });
-
-  y += 12;
-
-  // ── Totals ──
-  const totals = [
-    { label:'Subtotal', val:`$${subtotal.toLocaleString('en-US',{minimumFractionDigits:2})}`, color:[116,128,116] },
-    { label:'Tax (7%)', val:`$${tax.toLocaleString('en-US',{minimumFractionDigits:2})}`,      color:[116,128,116] },
-    { label:'TOTAL',    val:`$${total.toLocaleString('en-US',{minimumFractionDigits:2})}`,    color:[184,240,106], bold:true, size:13 },
-    { label:'50% Deposit Due', val:`$${deposit.toLocaleString('en-US',{minimumFractionDigits:2})}`, color:[106,240,200] },
-  ];
-
-  totals.forEach(row => {
-    doc.setFont('helvetica', row.bold ? 'bold' : 'normal');
-    doc.setFontSize(row.size || 9.5);
-    doc.setTextColor(116, 128, 116);
-    doc.text(row.label, W - 200, y);
-    doc.setTextColor(...row.color);
-    doc.text(row.val, W - 56, y, { align:'right' });
-    y += row.bold ? 20 : 16;
-  });
-
-  y += 20;
-
-  // ── Terms box ──
-  doc.setFillColor(24, 28, 24);
-  doc.roundedRect(40, y, W - 80, 62, 4, 4, 'F');
-  doc.setTextColor(184, 240, 106);
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.text('TERMS & CONDITIONS', 56, y + 14);
-  doc.setFont('helvetica', 'normal');
-  doc.setTextColor(116, 128, 116);
-  const terms = '50% deposit required to schedule. Balance due upon completion. Material lead time may vary. Price valid for 30 days. Licensed & Insured.';
-  const lines = doc.splitTextToSize(terms, W - 120);
-  doc.text(lines, 56, y + 26);
-
-  y += 82;
-
-  // ── Footer ──
-  doc.setTextColor(62, 74, 62);
-  doc.setFontSize(8);
-  doc.setFont('helvetica', 'normal');
-  doc.text('Vinny & Wes Flooring  ·  Second Brain OS  ·  Thank you for your business!', W / 2, y, { align:'center' });
-
-  // Save
-  const filename = `Estimate_${client.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.pdf`;
-  doc.save(filename);
+  const w = window.open('','_blank','width=800,height:1000');
+  w.document.write(html);
+  w.document.close();
 }
 
 // ══════════════════════════════════════════
