@@ -659,21 +659,21 @@ textarea{resize:vertical;min-height:70px;}
       </div>
 
       <div class="numpad">
-        <button class="np-btn" onclick="pinInput('1')">1<span class="np-letters"></span></button>
-        <button class="np-btn" onclick="pinInput('2')">2<span class="np-letters">ABC</span></button>
-        <button class="np-btn" onclick="pinInput('3')">3<span class="np-letters">DEF</span></button>
-        <button class="np-btn" onclick="pinInput('4')">4<span class="np-letters">GHI</span></button>
-        <button class="np-btn" onclick="pinInput('5')">5<span class="np-letters">JKL</span></button>
-        <button class="np-btn" onclick="pinInput('6')">6<span class="np-letters">MNO</span></button>
-        <button class="np-btn" onclick="pinInput('7')">7<span class="np-letters">PQRS</span></button>
-        <button class="np-btn" onclick="pinInput('8')">8<span class="np-letters">TUV</span></button>
-        <button class="np-btn" onclick="pinInput('9')">9<span class="np-letters">WXYZ</span></button>
-        <button class="np-btn action" onclick="pinBack()">⌫</button>
-        <button class="np-btn" onclick="pinInput('0')">0</button>
-        <button class="np-btn action" onclick="clearLogin()">C</button>
+        <button class="np-btn" data-digit="1">1<span class="np-letters"></span></button>
+        <button class="np-btn" data-digit="2">2<span class="np-letters">ABC</span></button>
+        <button class="np-btn" data-digit="3">3<span class="np-letters">DEF</span></button>
+        <button class="np-btn" data-digit="4">4<span class="np-letters">GHI</span></button>
+        <button class="np-btn" data-digit="5">5<span class="np-letters">JKL</span></button>
+        <button class="np-btn" data-digit="6">6<span class="np-letters">MNO</span></button>
+        <button class="np-btn" data-digit="7">7<span class="np-letters">PQRS</span></button>
+        <button class="np-btn" data-digit="8">8<span class="np-letters">TUV</span></button>
+        <button class="np-btn" data-digit="9">9<span class="np-letters">WXYZ</span></button>
+        <button class="np-btn action" id="pinBackBtn">⌫</button>
+        <button class="np-btn" data-digit="0">0</button>
+        <button class="np-btn action" id="pinClearBtn">C</button>
       </div>
 
-      <button class="login-submit" onclick="submitLogin()">Sign In →</button>
+      <button class="login-submit" id="loginSubmitBtn">Sign In →</button>
       <div class="login-error-msg" id="loginError"></div>
     </div>
     <div class="login-footer">
@@ -2289,12 +2289,14 @@ function pinInput(digit) {
   if (pinEntry.length >= 4) return;
   pinEntry += digit;
   updatePinDots();
-  if (pinEntry.length === 4) setTimeout(submitLogin, 200);
+  document.getElementById('loginError').textContent = '';
+  if (pinEntry.length === 4) setTimeout(submitLogin, 150);
 }
 
 function pinBack() {
   pinEntry = pinEntry.slice(0, -1);
   updatePinDots();
+  document.getElementById('loginError').textContent = '';
 }
 
 function clearLogin() {
@@ -2305,17 +2307,21 @@ function clearLogin() {
 
 function updatePinDots() {
   for (let i = 0; i < 4; i++) {
-    document.getElementById('pd' + i).classList.toggle('filled', i < pinEntry.length);
+    const dot = document.getElementById('pd' + i);
+    if (dot) dot.classList.toggle('filled', i < pinEntry.length);
   }
 }
 
 function submitLogin() {
-  const username = document.getElementById('loginUsername').value.trim().toLowerCase();
+  const usernameEl = document.getElementById('loginUsername');
   const errEl = document.getElementById('loginError');
+  if (!usernameEl || !errEl) return;
+
+  const username = usernameEl.value.trim().toLowerCase();
 
   if (!username) {
     errEl.textContent = 'Please enter your username.';
-    document.getElementById('loginUsername').focus();
+    usernameEl.focus();
     pinEntry = ''; updatePinDots();
     return;
   }
@@ -2340,10 +2346,8 @@ function submitLogin() {
   if (pinEntry !== p.pin) {
     errEl.textContent = 'Wrong PIN. Try again.';
     pinEntry = ''; updatePinDots();
-    // shake animation
     const card = document.querySelector('.login-card');
-    card.style.animation = 'shake .3s ease';
-    setTimeout(() => card.style.animation = '', 400);
+    if (card) { card.style.animation = 'shake .3s ease'; setTimeout(() => card.style.animation = '', 400); }
     return;
   }
 
@@ -2351,17 +2355,46 @@ function submitLogin() {
   loginAs(matchKey);
 }
 
-// Allow Enter key on username field to focus PIN (just UX nicety)
-document.addEventListener('DOMContentLoaded', () => {
-  const u = document.getElementById('loginUsername');
-  if (u) u.addEventListener('keydown', e => {
-    if (e.key === 'Enter') e.target.blur();
+// Wire up numpad buttons after DOM is ready — fixes GitHub Pages timing issue
+function initLoginButtons() {
+  // Numpad digit buttons
+  document.querySelectorAll('.np-btn[data-digit]').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      pinInput(this.getAttribute('data-digit'));
+    });
   });
-});
+  // Back button
+  const backBtn = document.getElementById('pinBackBtn');
+  if (backBtn) backBtn.addEventListener('click', function(e){ e.preventDefault(); pinBack(); });
+  // Clear button
+  const clearBtn = document.getElementById('pinClearBtn');
+  if (clearBtn) clearBtn.addEventListener('click', function(e){ e.preventDefault(); clearLogin(); });
+  // Submit button
+  const submitBtn = document.getElementById('loginSubmitBtn');
+  if (submitBtn) submitBtn.addEventListener('click', function(e){ e.preventDefault(); submitLogin(); });
+  // Username enter key
+  const u = document.getElementById('loginUsername');
+  if (u) u.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); u.blur(); } });
+  // Keyboard support for PIN
+  document.addEventListener('keydown', function(e) {
+    const ls = document.getElementById('loginScreen');
+    if (!ls || ls.style.display === 'none') return;
+    if (e.key >= '0' && e.key <= '9') pinInput(e.key);
+    else if (e.key === 'Backspace') pinBack();
+    else if (e.key === 'Enter') submitLogin();
+  });
+}
 
-function cancelPin() {} // kept for compatibility
-function selectProfile() {} // kept for compatibility
-function updatePinDisplay() {} // kept for compatibility
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLoginButtons);
+} else {
+  initLoginButtons();
+}
+
+function cancelPin() {}
+function selectProfile() {}
+function updatePinDisplay() {}
 
 function loginAs(key) {
   currentProfile = key;
