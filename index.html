@@ -160,7 +160,50 @@ body{background:var(--bg);color:var(--text);font-family:var(--FB);font-size:14px
 .month-chip{font-size:9.5px;padding:2px 5px;border-radius:4px;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:filter .15s;}
 .month-chip:hover{filter:brightness(1.3);}
 
-/* ═══ PARTNER CARDS ═══ */
+/* ═══ VISIT SCHEDULING ═══ */
+.visit-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10px;padding:3px 8px;border-radius:20px;
+  background:rgba(58,138,0,.1);border:1px solid rgba(58,138,0,.2);
+  color:#3a8a00;font-weight:500;margin-top:6px;cursor:pointer;
+}
+.visit-badge:hover{background:rgba(58,138,0,.18);}
+.visit-reminder{
+  background:linear-gradient(135deg,rgba(26,90,170,.08),rgba(58,138,0,.06));
+  border:1.5px solid rgba(26,90,170,.2);border-radius:var(--radius);
+  padding:12px 16px;margin-bottom:14px;display:none;cursor:pointer;
+}
+.visit-reminder.show{display:flex;align-items:center;gap:12px;}
+.visit-reminder-icon{font-size:20px;flex-shrink:0;}
+.visit-reminder-title{font-weight:700;font-size:13px;color:#1a5aaa;}
+.visit-reminder-sub{font-size:11.5px;color:#4a5e4a;margin-top:1px;}
+
+/* SALESPERSON CARD */
+.sp-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);transition:all .15s;
+}
+.sp-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);border-color:var(--border2);}
+.sp-avatar{
+  width:46px;height:46px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:17px;margin-bottom:10px;
+}
+.sp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+.sp-stat{background:var(--surface2);border-radius:7px;padding:8px;text-align:center;}
+.sp-stat-val{font-weight:700;font-size:14px;color:var(--accent);}
+.sp-stat-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+
+/* B2B CLIENT LIST */
+.b2b-client-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:12px 14px;
+  display:flex;align-items:flex-start;gap:12px;
+  transition:all .15s;cursor:pointer;
+}
+.b2b-client-card:hover{background:var(--surface3);border-color:var(--border2);}
+
 .partner-card{
   background:var(--surface);border:1px solid var(--border);
   border-radius:var(--radius);padding:18px;
@@ -658,6 +701,7 @@ textarea{resize:vertical;min-height:70px;}
     <div class="nav-item" id="nav-jobs" onclick="go('jobs')"><span class="nav-icon">🏗️</span>Jobs<span class="nav-badge" id="jobsBadge">4</span></div>
     <div class="nav-item" id="nav-schedule" onclick="go('schedule')"><span class="nav-icon">📅</span>Schedule</div>
     <div class="nav-item" id="nav-team" onclick="go('team')"><span class="nav-icon">👷</span>Team</div>
+    <div class="nav-item" id="nav-sales" onclick="go('sales')"><span class="nav-icon">🧑‍💼</span>Sales Team</div>
     <div class="nav-item" id="nav-field" onclick="go('field')"><span class="nav-icon">📲</span>Field View</div>
     <div class="nav-sec">Finance</div>
     <div class="nav-item" id="nav-finance" onclick="go('finance')"><span class="nav-icon">💰</span>Finance</div>
@@ -702,6 +746,14 @@ textarea{resize:vertical;min-height:70px;}
           <div class="dash-alert-sub">Tap to review and generate invoice in QuickBooks</div>
         </div>
         <div class="dash-alert-arrow">→</div>
+      </div>
+      <div class="visit-reminder" id="dashVisitReminder" onclick="go('pipeline')">
+        <div class="visit-reminder-icon">📅</div>
+        <div style="flex:1;">
+          <div class="visit-reminder-title" id="dashVisitTitle">Upcoming visit today</div>
+          <div class="visit-reminder-sub" id="dashVisitSub"></div>
+        </div>
+        <div style="color:#1a5aaa;font-size:16px;">→</div>
       </div>
       <div class="stats" id="dashStats"></div>
       <div class="sec-row"><div class="sec-title">Pipeline</div><button class="btn btn-ghost btn-sm" onclick="go('pipeline')">Full board →</button></div>
@@ -862,6 +914,18 @@ textarea{resize:vertical;min-height:70px;}
       </div>
     </div>
 
+    <!-- SALES TEAM -->
+    <div class="view" id="view-sales">
+      <div class="sec-row">
+        <div>
+          <div class="sec-title">Sales Team</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px;">Manage salespeople who handle client visits and quotes</div>
+        </div>
+        <button class="btn btn-primary" onclick="openAddSalesperson()">＋ Add Salesperson</button>
+      </div>
+      <div id="salesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;"></div>
+    </div>
+
     <!-- PARTNERS -->
     <div class="view" id="view-partners">
       <div class="sec-row">
@@ -962,10 +1026,19 @@ textarea{resize:vertical;min-height:70px;}
     <div class="modal-body">
       <div class="det-sec"><div class="det-sec-title">Status</div><div class="status-chips" id="ld_chips"></div></div>
       <div class="det-sec"><div class="det-sec-title">Info</div><div class="det-grid" id="ld_grid"></div></div>
+      <div class="det-sec" id="ld_visit_section" style="display:none;">
+        <div class="det-sec-title">📅 Scheduled Visit</div>
+        <div id="ld_visit_info" style="background:rgba(58,138,0,.06);border:1.5px solid rgba(58,138,0,.2);border-radius:8px;padding:12px 14px;"></div>
+      </div>
       <div class="det-sec"><div class="det-sec-title">Notes</div><div id="ld_notes" style="font-size:12.5px;color:var(--text2);line-height:1.6;"></div></div>
       <div class="det-sec"><div class="det-sec-title">Activity</div><div class="timeline" id="ld_timeline"></div></div>
     </div>
-    <div class="modal-foot"><button class="btn btn-danger btn-sm" onclick="deleteLead()">Delete</button><button class="btn btn-ghost" onclick="closeModal('modalLeadDetail')">Close</button><button class="btn btn-primary" onclick="convertToJob()">→ Convert to Job</button></div>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" onclick="deleteLead()">Delete</button>
+      <button class="btn btn-ghost btn-sm" onclick="openScheduleVisit()">📅 Schedule Visit</button>
+      <button class="btn btn-ghost" onclick="closeModal('modalLeadDetail')">Close</button>
+      <button class="btn btn-primary" onclick="convertToJob()">→ Convert to Job</button>
+    </div>
   </div>
 </div>
 
@@ -1171,7 +1244,7 @@ function go(view){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
   const ni=document.getElementById('nav-'+view);if(ni)ni.classList.add('active');
-  const titles={dashboard:'Dashboard',pipeline:'Pipeline',leads:'Leads',estimates:'Estimates',jobs:'Jobs',schedule:'Schedule',team:'Team',field:'Field View',finance:'Finance',partners:'Partners · B2B',messages:'Messages'};
+  const titles={dashboard:'Dashboard',pipeline:'Pipeline',leads:'Leads',estimates:'Estimates',jobs:'Jobs',schedule:'Schedule',team:'Team',sales:'Sales Team',field:'Field View',finance:'Finance',partners:'Partners · B2B',messages:'Messages'};
   document.getElementById('pageTitle').textContent=titles[view]||view;
   document.getElementById('searchWrap').style.display=view==='leads'?'block':'none';
   const btn=document.getElementById('topBtn');
@@ -1183,6 +1256,7 @@ function go(view){
   if(view==='jobs')renderJobs();
   if(view==='schedule')renderSchedule();
   if(view==='team')renderTeam();
+  if(view==='sales')renderSales();
   if(view==='field')renderField();
   if(view==='finance')renderFinance();
   if(view==='partners')renderPartners();
@@ -1226,12 +1300,15 @@ function leadCardHTML(l){
   const tc={residential:'tr',builder:'tb',commercial:'tc'}[l.type]||'';
   const pc={high:'ph',med:'pm',low:'pl'}[l.priority]||'';
   const partner=l.partnerId?partners.find(x=>x.id===l.partnerId):null;
+  const visit=l.visitId?visits.find(x=>x.id===l.visitId):null;
+  const sp=visit?salespeople.find(x=>x.id===visit.salespersonId):null;
   return `<div class="card" onclick="openLeadDetail(${l.id})">
     <div class="prio-dot ${pc}"></div>
     <span class="type-tag ${tc}">${l.type}</span>
     ${partner?`<span class="type-tag" style="background:rgba(58,138,0,.1);color:#3a8a00;margin-left:4px;">🤝 ${partner.company}</span>`:''}
     <div class="card-name">${l.name}</div>
     <div class="card-det">${l.service} · ${l.address.split('—')[0].trim()}</div>
+    ${visit?`<div class="visit-badge">📅 ${fmtDate(visit.date)} ${visit.time}${sp?' · '+sp.fname:''}</div>`:''}
     <div class="card-foot"><span class="card-val">$${l.value.toLocaleString()}</span><span class="card-date">${l.created}</span></div>
   </div>`;
 }
@@ -1851,21 +1928,6 @@ function saveJob(){
 }
 
 function openJobDetail(id){
-  currentJobId=id;const j=jobs.find(x=>x.id===id);if(!j)return;
-  const st=JOB_ST.find(s=>s.id===j.status);
-  document.getElementById('jd_name').textContent=j.client;
-  document.getElementById('jd_sub').textContent=`${j.service} · ${j.address}`;
-  document.getElementById('jd_notes').textContent=j.notes||'—';
-  document.getElementById('jd_chips').innerHTML=JOB_ST.map(s=>`<div class="s-chip ${j.status===s.id?'sel':''}" onclick="setJobSt(${id},'${s.id}')">${s.label}</div>`).join('');
-  document.getElementById('jd_grid').innerHTML=`
-    <div><div class="det-lbl">Service</div><div class="det-val">${j.service}</div></div>
-    <div><div class="det-lbl">Size</div><div class="det-val">${j.size}</div></div>
-    <div><div class="det-lbl">Crew</div><div class="det-val">${j.crew}</div></div>
-    <div><div class="det-lbl">Duration</div><div class="det-val">${j.duration}</div></div>
-    <div><div class="det-lbl">Start</div><div class="det-val">${fmtDate(j.start)}</div></div>
-    <div><div class="det-lbl">Value</div><div class="det-val" style="color:var(--accent)">$${j.value.toLocaleString()}</div></div>
-    ${j.partnerId?(()=>{const p=partners.find(x=>x.id===j.partnerId);const ti=p?partnerTypeInfo(p.type):{icon:'🤝'};return `<div style="grid-column:1/-1"><div class="det-lbl">B2B Partner</div><div class="det-val">${p?`${ti.icon} <span onclick="closeModal('modalJobDetail');openPartnerDetail('${p.id}')" style="color:var(--accent);cursor:pointer;">${p.company}</span>`:'—'}</div></div>`;})():''}`;
-  const done=Object.values(j.checklist).filter(Boolean).length;
   currentJobId=id;
   const j=jobs.find(x=>x.id===id);if(!j)return;
   if(!j.photos) j.photos={before:[],after:[]};
@@ -1887,7 +1949,8 @@ function openJobDetail(id){
     <div><div class="det-lbl">Crew</div><div class="det-val">${j.crew}</div></div>
     <div><div class="det-lbl">Duration</div><div class="det-val">${j.duration}</div></div>
     <div><div class="det-lbl">Start</div><div class="det-val">${fmtDate(j.start)}</div></div>
-    <div><div class="det-lbl">Value</div><div class="det-val" style="color:var(--accent)">$${j.value.toLocaleString()}</div></div>`;
+    <div><div class="det-lbl">Value</div><div class="det-val" style="color:var(--accent)">$${j.value.toLocaleString()}</div></div>
+    ${j.partnerId?(()=>{const p=partners.find(x=>x.id===j.partnerId);const ti=p?partnerTypeInfo(p.type):{icon:'🤝'};return `<div style="grid-column:1/-1"><div class="det-lbl">B2B Partner</div><div class="det-val">${p?`${ti.icon} <span onclick="closeModal('modalJobDetail');openPartnerDetail('${p.id}')" style="color:var(--accent);cursor:pointer;">${p.company}</span>`:'—'}</div></div>`;})():''}`;
   const done=Object.values(j.checklist).filter(Boolean).length;
   document.getElementById('jd_checklist').innerHTML=CL.map((item,i)=>`<div class="field-check ${j.checklist[i]?'done':''}" onclick="toggleCheckModal(${j.id},${i})"><div class="field-check-box">${j.checklist[i]?'✓':''}</div><span class="field-check-label">${item}</span></div>`).join('');
   document.getElementById('jd_prog').style.width=Math.round(done/CL.length*100)+'%';
@@ -2198,6 +2261,7 @@ function refreshAll(){
     if(id==='jobs')renderJobs();
     if(id==='schedule')renderSchedule();
     if(id==='team')renderTeam();
+    if(id==='sales')renderSales();
     if(id==='field')renderField();
     if(id==='finance')renderFinance();
     if(id==='partners')renderPartners();
@@ -2219,7 +2283,7 @@ let currentProfile = null;
 let selectedProfileKey = null;
 let pinEntry = '';
 
-const OWNER_ONLY_NAVS = ['pipeline','leads','estimates','jobs','team','finance','partners','messages'];
+const OWNER_ONLY_NAVS = ['pipeline','leads','estimates','jobs','team','sales','finance','partners','messages'];
 
 function pinInput(digit) {
   if (pinEntry.length >= 4) return;
@@ -2639,6 +2703,7 @@ function populatePartnerSelects(){
     sel.value=val;
   });
 }
+function updateStorageIndicator(){
   try {
     let total=0;
     Object.values(STORAGE_KEYS).forEach(k=>{
@@ -2660,12 +2725,307 @@ function clearAllData(){
   location.reload();
 }
 
+// ══════════════════════════════════════════
+// SALES TEAM
+// ══════════════════════════════════════════
+const SP_COLORS=[
+  {color:'#3a8a00',bg:'rgba(58,138,0,.12)'},{color:'#1a5aaa',bg:'rgba(26,90,170,.12)'},
+  {color:'#6a20aa',bg:'rgba(106,32,170,.12)'},{color:'#c05a00',bg:'rgba(192,90,0,.12)'},
+  {color:'#0a7a5a',bg:'rgba(10,122,90,.12)'},
+];
+
+let salespeople = loadData('sb_salespeople', [
+  {id:'sp1',fname:'Vinny',lname:'Albuquerque',phone:'(305) 555-0001',email:'vinny@vinnywes.com',role:'Owner / Sales',notes:'Primary closer. Handles all B2B relationships.',colorIdx:0},
+]);
+let b2bClients  = loadData('sb_b2bclients', []);
+let visits      = loadData('sb_visits', []);
+
+function saveAll(){
+  save();
+  try {
+    localStorage.setItem('sb_salespeople', JSON.stringify(salespeople));
+    localStorage.setItem('sb_b2bclients',  JSON.stringify(b2bClients));
+    localStorage.setItem('sb_visits',      JSON.stringify(visits));
+  } catch(e){ console.warn(e); }
+}
+
+function renderSales(){
+  const el=document.getElementById('salesGrid'); if(!el) return;
+  if(!salespeople.length){
+    el.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon">🧑‍💼</div><div class="empty-title">No salespeople yet</div></div>`;
+    return;
+  }
+  el.innerHTML=salespeople.map(sp=>{
+    const c=SP_COLORS[sp.colorIdx%SP_COLORS.length];
+    const myVisits=visits.filter(v=>v.salespersonId===sp.id);
+    const upcoming=myVisits.filter(v=>new Date(v.date)>=new Date()).length;
+    const myLeads=leads.filter(l=>l.salespersonId===sp.id).length;
+    return `<div class="sp-card">
+      <div class="sp-avatar" style="background:${c.bg};color:${c.color};">${sp.fname[0]}${sp.lname?sp.lname[0]:''}</div>
+      <div style="font-weight:700;font-size:15px;">${sp.fname} ${sp.lname||''}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">${sp.role}</div>
+      ${sp.phone?`<div style="font-size:12px;color:var(--text2);">📞 ${sp.phone}</div>`:''}
+      ${sp.email?`<div style="font-size:12px;color:var(--text2);">✉️ ${sp.email}</div>`:''}
+      <div class="sp-stats">
+        <div class="sp-stat"><div class="sp-stat-val">${myLeads}</div><div class="sp-stat-lbl">Leads</div></div>
+        <div class="sp-stat"><div class="sp-stat-val">${myVisits.length}</div><div class="sp-stat-lbl">Visits</div></div>
+        <div class="sp-stat"><div class="sp-stat-val">${upcoming}</div><div class="sp-stat-lbl">Upcoming</div></div>
+      </div>
+      ${sp.notes?`<div style="font-size:11.5px;color:var(--text3);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">${sp.notes}</div>`:''}
+      <div style="margin-top:10px;display:flex;gap:6px;">
+        <button class="btn btn-ghost btn-sm" onclick="deleteSalesperson('${sp.id}')">Remove</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openAddSalesperson(){
+  ['sp_fname','sp_lname','sp_phone','sp_email','sp_notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('sp_role').value='Sales Rep';
+  document.getElementById('modalAddSalesperson').classList.add('open');
+}
+
+function saveSalesperson(){
+  const fname=document.getElementById('sp_fname').value.trim();
+  const email=document.getElementById('sp_email').value.trim();
+  if(!fname){alert('First name required.');return;}
+  salespeople.push({
+    id:'sp'+Date.now(), fname, lname:document.getElementById('sp_lname').value.trim(),
+    phone:document.getElementById('sp_phone').value.trim(), email,
+    role:document.getElementById('sp_role').value,
+    notes:document.getElementById('sp_notes').value.trim(),
+    colorIdx:salespeople.length%SP_COLORS.length,
+  });
+  closeModal('modalAddSalesperson');
+  saveAll(); renderSales(); populateSalespersonSelects();
+}
+
+function deleteSalesperson(id){
+  if(!confirm('Remove this salesperson?')) return;
+  salespeople=salespeople.filter(s=>s.id!==id);
+  saveAll(); renderSales(); populateSalespersonSelects();
+}
+
+function populateSalespersonSelects(){
+  const opts='<option value="">— Select —</option>'+salespeople.map(sp=>`<option value="${sp.id}">${sp.fname} ${sp.lname||''} (${sp.role})</option>`).join('');
+  ['sv_salesperson'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=opts;});
+}
+
+// ══════════════════════════════════════════
+// VISIT SCHEDULING
+// ══════════════════════════════════════════
+function openScheduleVisit(){
+  const l=leads.find(x=>x.id===currentLeadId); if(!l) return;
+  document.getElementById('svLeadName').textContent=`${l.name} · ${l.service}`;
+  document.getElementById('sv_client_email').textContent=l.email||'No email on file';
+  document.getElementById('sv_address').value=l.address||'';
+  document.getElementById('sv_date').value=new Date().toISOString().slice(0,10);
+  document.getElementById('sv_time').value='10:00';
+  document.getElementById('sv_notes').value='';
+  populateSalespersonSelects();
+  closeModal('modalLeadDetail');
+  document.getElementById('modalScheduleVisit').classList.add('open');
+}
+
+function saveVisit(){
+  const date=document.getElementById('sv_date').value;
+  const time=document.getElementById('sv_time').value;
+  const salespersonId=document.getElementById('sv_salesperson').value;
+  if(!date||!time){alert('Date and time required.');return;}
+  if(!salespersonId){alert('Please select a salesperson.');return;}
+
+  const sp=salespeople.find(x=>x.id===salespersonId);
+  const l=leads.find(x=>x.id===currentLeadId);
+
+  const visit={
+    id:'v'+Date.now(), leadId:currentLeadId, salespersonId,
+    date, time, type:document.getElementById('sv_type').value,
+    address:document.getElementById('sv_address').value,
+    notes:document.getElementById('sv_notes').value,
+    created:new Date().toISOString().slice(0,10),
+  };
+  visits.push(visit);
+
+  // Update lead with visit info
+  if(l){
+    l.visitId=visit.id;
+    l.status=l.status==='new'?'followup':l.status;
+  }
+
+  // Send confirmation email via mailto
+  if(l?.email && sp){
+    const subject=encodeURIComponent(`Visit Confirmed — ${visit.type} on ${fmtDate(date)}`);
+    const body=encodeURIComponent(
+`Hi ${l.name.split(' ')[0]},
+
+Your visit has been confirmed. Here are the details:
+
+📅 Date: ${fmtDate(date)}
+🕐 Time: ${time}
+📋 Type: ${visit.type}
+📍 Address: ${visit.address||l.address||'TBD'}
+👤 Salesperson: ${sp.fname} ${sp.lname||''} — ${sp.phone||''}
+
+${visit.notes?'Notes: '+visit.notes+'\n\n':''}We look forward to meeting with you!
+
+Best,
+${sp.fname}
+Vinny & Wes Flooring`
+    );
+    window.location.href=`mailto:${l.email}?subject=${subject}&body=${body}`;
+  }
+
+  saveAll(); refreshAll();
+  closeModal('modalScheduleVisit');
+  // Show success
+  setTimeout(()=>{ openLeadDetail(currentLeadId); }, 300);
+}
+
+function renderVisitBadge(lead){
+  if(!lead.visitId) return '';
+  const v=visits.find(x=>x.id===lead.visitId); if(!v) return '';
+  const sp=salespeople.find(x=>x.id===v.salespersonId);
+  return `<div class="visit-badge" onclick="event.stopPropagation();currentLeadId=${lead.id};openScheduleVisit()">
+    📅 ${fmtDate(v.date)} ${v.time} · ${sp?sp.fname:'—'}
+  </div>`;
+}
+
+function checkVisitReminders(){
+  const today=new Date().toISOString().slice(0,10);
+  const todayVisits=visits.filter(v=>v.date===today);
+  const el=document.getElementById('dashVisitReminder');
+  if(!el) return;
+  if(todayVisits.length){
+    const v=todayVisits[0];
+    const l=leads.find(x=>x.id===v.leadId);
+    const sp=salespeople.find(x=>x.id===v.salespersonId);
+    el.classList.add('show');
+    document.getElementById('dashVisitTitle').textContent=`📅 Visit today at ${v.time} — ${l?.name||'Client'}`;
+    document.getElementById('dashVisitSub').textContent=`${v.type} · ${sp?sp.fname+' '+( sp.lname||''):'—'} · ${v.address||'—'}`;
+  } else {
+    // Check next upcoming
+    const upcoming=visits.filter(v=>v.date>today).sort((a,b)=>a.date.localeCompare(b.date));
+    if(upcoming.length){
+      const v=upcoming[0];
+      const l=leads.find(x=>x.id===v.leadId);
+      const sp=salespeople.find(x=>x.id===v.salespersonId);
+      el.classList.add('show');
+      document.getElementById('dashVisitTitle').textContent=`📅 Next visit: ${fmtDate(v.date)} at ${v.time}`;
+      document.getElementById('dashVisitSub').textContent=`${l?.name||'Client'} · ${v.type} · ${sp?sp.fname:'—'}`;
+    }
+  }
+}
+
+// ══════════════════════════════════════════
+// B2B CLIENTS
+// ══════════════════════════════════════════
+function openAddB2BClient(){
+  ['bc_name','bc_contact','bc_crole','bc_phone','bc_email','bc_address','bc_size','bc_notes'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('bc_budget').value='';
+  document.getElementById('bc_terms').value='';
+  const p=partners.find(x=>x.id===currentPartnerId);
+  document.getElementById('b2bPartnerLabel').textContent=p?`Partner: ${p.company}`:'';
+  closeModal('modalPartnerDetail');
+  document.getElementById('modalAddB2BClient').classList.add('open');
+}
+
+function saveB2BClient(){
+  const name=document.getElementById('bc_name').value.trim();
+  if(!name){alert('Client/project name required.');return;}
+  const client={
+    id:'bc'+Date.now(), partnerId:currentPartnerId, name,
+    contact:document.getElementById('bc_contact').value.trim(),
+    crole:document.getElementById('bc_crole').value.trim(),
+    phone:document.getElementById('bc_phone').value.trim(),
+    email:document.getElementById('bc_email').value.trim(),
+    address:document.getElementById('bc_address').value.trim(),
+    ptype:document.getElementById('bc_ptype').value,
+    size:document.getElementById('bc_size').value.trim(),
+    budget:parseInt(document.getElementById('bc_budget').value)||0,
+    terms:document.getElementById('bc_terms').value,
+    notes:document.getElementById('bc_notes').value.trim(),
+    created:new Date().toISOString().slice(0,10),
+  };
+  b2bClients.push(client);
+  closeModal('modalAddB2BClient');
+  saveAll();
+  // Reopen partner detail
+  setTimeout(()=>openPartnerDetail(currentPartnerId), 200);
+}
+
+// Update openPartnerDetail to show B2B clients
+const _origOpenPartnerDetail = openPartnerDetail;
+function openPartnerDetail(id){
+  _origOpenPartnerDetail(id);
+  // Render B2B clients for this partner
+  const clients=b2bClients.filter(c=>c.partnerId===id);
+  const el=document.getElementById('pd_b2b_clients');
+  if(!el) return;
+  el.innerHTML=clients.length ? clients.map(c=>`
+    <div class="b2b-client-card">
+      <div style="font-size:20px;">🏢</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:13px;">${c.name}</div>
+        <div style="font-size:11.5px;color:var(--text2);">${c.ptype}${c.size?' · '+c.size:''}</div>
+        ${c.contact?`<div style="font-size:11px;color:var(--text3);">👤 ${c.contact}${c.crole?' · '+c.crole:''}</div>`:''}
+        ${c.address?`<div style="font-size:11px;color:var(--text3);">📍 ${c.address}</div>`:''}
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        ${c.budget?`<div style="font-weight:600;font-size:13px;color:var(--accent);">$${c.budget.toLocaleString()}</div>`:''}
+        ${c.terms?`<div style="font-size:10px;color:var(--text3);">${c.terms}</div>`:''}
+      </div>
+    </div>`).join('')
+    : `<div style="font-size:12px;color:var(--text3);padding:8px;">No clients added yet.</div>`;
+}
+
+// Update openLeadDetail to show visit info
+const _origOpenLeadDetail = openLeadDetail;
+function openLeadDetail(id){
+  _origOpenLeadDetail(id);
+  const l=leads.find(x=>x.id===id); if(!l) return;
+  const visitSec=document.getElementById('ld_visit_section');
+  const visitInfo=document.getElementById('ld_visit_info');
+  if(l.visitId){
+    const v=visits.find(x=>x.id===l.visitId);
+    const sp=v?salespeople.find(x=>x.id===v.salespersonId):null;
+    if(v && visitSec && visitInfo){
+      visitSec.style.display='block';
+      visitInfo.innerHTML=`
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12.5px;">
+          <div><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">DATE & TIME</div><div style="font-weight:600;">${fmtDate(v.date)} at ${v.time}</div></div>
+          <div><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">TYPE</div><div style="font-weight:600;">${v.type}</div></div>
+          <div><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">SALESPERSON</div><div style="font-weight:600;">${sp?sp.fname+' '+(sp.lname||''):'—'}</div></div>
+          <div><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">ADDRESS</div><div style="font-weight:600;">${v.address||'—'}</div></div>
+          ${v.notes?`<div style="grid-column:1/-1"><div style="font-size:10px;color:var(--text3);margin-bottom:2px;">NOTES</div><div>${v.notes}</div></div>`:''}
+        </div>
+        <div style="margin-top:10px;display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="closeModal('modalLeadDetail');document.getElementById('modalScheduleVisit').classList.add('open');">✏️ Reschedule</button>
+          <button class="btn btn-ghost btn-sm" style="color:var(--red);" onclick="cancelVisit('${v.id}')">Cancel Visit</button>
+        </div>`;
+    }
+  } else {
+    if(visitSec) visitSec.style.display='none';
+  }
+}
+
+function cancelVisit(visitId){
+  if(!confirm('Cancel this visit?')) return;
+  visits=visits.filter(v=>v.id!==visitId);
+  const l=leads.find(x=>x.id===currentLeadId);
+  if(l) delete l.visitId;
+  saveAll(); openLeadDetail(currentLeadId);
+}
+
 renderStats();
 renderPipeline('dashPipe',4,'all');
 renderDashJobs();
 document.getElementById('j_start').value=new Date().toISOString().slice(0,10);
 syncInstallerProfiles();
 populatePartnerSelects();
+populateSalespersonSelects();
+checkVisitReminders();
 updateStorageIndicator();
 </script>
 <!-- ADD PARTNER MODAL -->
@@ -2729,6 +3089,14 @@ updateStorageIndicator();
       <div class="det-sec"><div class="det-sec-title">Contact</div><div class="det-grid" id="pd_contact"></div></div>
       <!-- Terms -->
       <div class="det-sec"><div class="det-sec-title">Terms & Agreement</div><div id="pd_terms" style="font-size:13px;color:var(--text2);"></div></div>
+      <!-- Linked Jobs -->
+      <div class="det-sec">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <div class="det-sec-title" style="margin:0;">B2B Clients / Projects</div>
+          <button class="btn btn-ghost btn-sm" onclick="openAddB2BClient()">＋ Add Client</button>
+        </div>
+        <div id="pd_b2b_clients" style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;"></div>
+      </div>
       <!-- Linked Jobs -->
       <div class="det-sec">
         <div class="det-sec-title">Linked Jobs</div>
@@ -2884,6 +3252,114 @@ updateStorageIndicator();
     <div class="modal-foot">
       <button class="btn btn-danger btn-sm" onclick="deleteInstaller()">Remove</button>
       <button class="btn btn-ghost" onclick="closeModal('modalInstallerDetail')">Close</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- SCHEDULE VISIT MODAL -->
+<div class="overlay" id="modalScheduleVisit">
+  <div class="modal" style="max-width:460px;">
+    <div class="modal-head">
+      <div><div class="modal-title">📅 Schedule Visit</div><div style="font-size:11px;color:var(--text3);margin-top:2px;" id="svLeadName"></div></div>
+      <button class="modal-close" onclick="closeModal('modalScheduleVisit')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fr2">
+        <div><label>Date *</label><input type="date" id="sv_date"/></div>
+        <div><label>Time *</label><input type="time" id="sv_time" value="10:00"/></div>
+      </div>
+      <div class="fr"><label>Salesperson *</label><select id="sv_salesperson"><option value="">— Select —</option></select></div>
+      <div class="fr"><label>Visit Type</label>
+        <select id="sv_type">
+          <option>On-site Measurement</option><option>Initial Consultation</option>
+          <option>Quote Presentation</option><option>Follow-up Visit</option><option>Material Selection</option>
+        </select>
+      </div>
+      <div class="fr"><label>Address</label><input type="text" id="sv_address" placeholder="Visit address..."/></div>
+      <div class="fr"><label>Notes</label><textarea id="sv_notes" placeholder="Parking, access code, what to bring..." style="min-height:60px;"></textarea></div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-top:4px;">
+        <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;">Confirmation email will be sent to:</div>
+        <div style="font-size:12.5px;color:var(--text);" id="sv_client_email">—</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalScheduleVisit')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveVisit()">📅 Schedule &amp; Send Email</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SALESPERSON MODAL -->
+<div class="overlay" id="modalAddSalesperson">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-head"><div class="modal-title">Add Salesperson</div><button class="modal-close" onclick="closeModal('modalAddSalesperson')">✕</button></div>
+    <div class="modal-body">
+      <div class="fr2">
+        <div><label>First Name *</label><input type="text" id="sp_fname" placeholder="Vinny"/></div>
+        <div><label>Last Name</label><input type="text" id="sp_lname" placeholder="Albuquerque"/></div>
+      </div>
+      <div class="fr2">
+        <div><label>Phone</label><input type="tel" id="sp_phone" placeholder="(305) 555-0000"/></div>
+        <div><label>Email *</label><input type="email" id="sp_email" placeholder="vinny@email.com"/></div>
+      </div>
+      <div class="fr"><label>Role</label>
+        <select id="sp_role">
+          <option>Owner / Sales</option><option>Sales Rep</option>
+          <option>Account Manager</option><option>Estimator</option>
+        </select>
+      </div>
+      <div class="fr"><label>Notes</label><textarea id="sp_notes" placeholder="Territory, availability..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalAddSalesperson')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveSalesperson()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD B2B CLIENT MODAL -->
+<div class="overlay" id="modalAddB2BClient">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal-head">
+      <div><div class="modal-title">Add B2B Client / Project</div><div style="font-size:11px;color:var(--text3);margin-top:2px;" id="b2bPartnerLabel"></div></div>
+      <button class="modal-close" onclick="closeModal('modalAddB2BClient')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fr"><label>Client / Project Name *</label><input type="text" id="bc_name" placeholder="Ex: Riverside Condos Phase 2"/></div>
+      <div class="fr2">
+        <div><label>Contact Name</label><input type="text" id="bc_contact" placeholder="Maria Santos"/></div>
+        <div><label>Contact Role</label><input type="text" id="bc_crole" placeholder="Project Manager"/></div>
+      </div>
+      <div class="fr2">
+        <div><label>Phone</label><input type="tel" id="bc_phone" placeholder="(305) 555-0000"/></div>
+        <div><label>Email</label><input type="email" id="bc_email" placeholder="maria@company.com"/></div>
+      </div>
+      <div class="fr"><label>Project Address</label><input type="text" id="bc_address" placeholder="123 Main St, Miami, FL"/></div>
+      <div class="fr2">
+        <div><label>Project Type</label>
+          <select id="bc_ptype">
+            <option>Residential</option><option>Commercial</option>
+            <option>New Construction</option><option>Renovation</option><option>Mixed Use</option>
+          </select>
+        </div>
+        <div><label>Est. Size (SF)</label><input type="text" id="bc_size" placeholder="2,400 SF"/></div>
+      </div>
+      <div class="fr2">
+        <div><label>Est. Budget ($)</label><input type="number" id="bc_budget" placeholder="15000"/></div>
+        <div><label>Payment Terms</label>
+          <select id="bc_terms">
+            <option value="">Standard</option><option value="Net-15">Net-15</option>
+            <option value="Net-30">Net-30</option><option value="Net-45">Net-45</option>
+            <option value="50% deposit">50% deposit</option>
+          </select>
+        </div>
+      </div>
+      <div class="fr"><label>Notes</label><textarea id="bc_notes" placeholder="Timeline, requirements, decision maker info..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalAddB2BClient')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveB2BClient()">Save Client</button>
     </div>
   </div>
 </div>
