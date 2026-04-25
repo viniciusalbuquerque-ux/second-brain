@@ -160,14 +160,158 @@ body{background:var(--bg);color:var(--text);font-family:var(--FB);font-size:14px
 .month-chip{font-size:9.5px;padding:2px 5px;border-radius:4px;margin-bottom:2px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:filter .15s;}
 .month-chip:hover{filter:brightness(1.3);}
 
-/* ═══ TEAM ═══ */
-.team-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:11px;}
-.team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:15px;}
-.team-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--F);font-weight:700;font-size:14px;margin-bottom:9px;}
-.team-name{font-family:var(--F);font-weight:700;font-size:14px;}
-.team-role{font-size:11.5px;color:var(--text3);margin-bottom:10px;}
-.team-job{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:9px 11px;}
-.team-job-lbl{font-family:var(--FM);font-size:8.5px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+/* ═══ PARTNER CARDS ═══ */
+.partner-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);transition:all .15s;cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.partner-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.partner-card.builder::before{background:#1a5aaa;}
+.partner-card.designer::before{background:#6a20aa;}
+.partner-card.flooring::before{background:#3a8a00;}
+.partner-card.property::before{background:#c05a00;}
+.partner-card.other::before{background:#0a7a5a;}
+.partner-card:hover{border-color:var(--border2);box-shadow:0 4px 16px rgba(0,0,0,.1);transform:translateY(-1px);}
+.partner-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.partner-logo{
+  width:44px;height:44px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.partner-name{font-weight:700;font-size:15px;margin-bottom:2px;}
+.partner-type-badge{
+  font-size:10px;padding:2px 8px;border-radius:20px;
+  font-weight:600;display:inline-block;
+}
+.partner-contact{font-size:12px;color:var(--text2);margin-top:4px;}
+.partner-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.partner-metric{background:var(--surface2);border-radius:7px;padding:8px 10px;text-align:center;}
+.partner-metric-val{font-weight:700;font-size:15px;color:var(--accent);}
+.partner-metric-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-top:2px;}
+.partner-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.partner-tag{font-size:10.5px;padding:2px 8px;border-radius:5px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);}
+
+/* TYPE COLORS */
+.type-builder{background:rgba(26,90,170,.1);color:#1a5aaa;}
+.type-designer{background:rgba(106,32,170,.1);color:#6a20aa;}
+.type-flooring{background:rgba(58,138,0,.1);color:#3a8a00;}
+.type-property{background:rgba(192,90,0,.1);color:#c05a00;}
+.type-other{background:rgba(10,122,90,.1);color:#0a7a5a;}
+
+/* Metric card in detail modal */
+.pd-metric{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;}
+.pd-metric-val{font-weight:800;font-size:20px;color:var(--accent);}
+.pd-metric-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-top:3px;}
+.photo-section{margin-bottom:16px;}
+.photo-tabs{display:flex;gap:4px;margin-bottom:10px;}
+.photo-tab{padding:4px 12px;border-radius:6px;font-size:11.5px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);color:var(--text2);transition:all .15s;background:transparent;}
+.photo-tab.active.before{border-color:#1a5aaa;color:#1a5aaa;background:rgba(26,90,170,.08);}
+.photo-tab.active.after{border-color:#3a8a00;color:#3a8a00;background:rgba(58,138,0,.08);}
+.photo-tab:not(.active):hover{border-color:var(--border2);color:var(--text);}
+.photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px;}
+.photo-thumb{
+  aspect-ratio:1;border-radius:8px;overflow:hidden;
+  border:1.5px solid var(--border);cursor:pointer;
+  position:relative;background:var(--surface2);
+  transition:all .15s;
+}
+.photo-thumb:hover{border-color:var(--border2);transform:scale(1.02);}
+.photo-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+.photo-thumb .photo-remove{
+  position:absolute;top:4px;right:4px;
+  width:20px;height:20px;border-radius:50%;
+  background:rgba(176,32,32,.85);color:#fff;
+  font-size:11px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;opacity:0;transition:opacity .15s;
+}
+.photo-thumb:hover .photo-remove{opacity:1;}
+.photo-upload-btn{
+  aspect-ratio:1;border-radius:8px;
+  border:2px dashed var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;cursor:pointer;transition:all .15s;background:var(--surface2);
+  color:var(--text3);font-size:11px;
+}
+.photo-upload-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
+.photo-upload-btn .upload-icon{font-size:20px;}
+.photo-count-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;
+}
+
+/* ═══ COMPLETION ALERT ═══ */
+.completion-banner{
+  background:linear-gradient(135deg,rgba(58,138,0,.1),rgba(10,122,90,.08));
+  border:1.5px solid rgba(58,138,0,.25);
+  border-radius:var(--radius);padding:14px 16px;
+  margin-bottom:16px;display:none;
+}
+.completion-banner.show{display:block;}
+.completion-banner-title{font-weight:700;font-size:14px;color:#2a6a00;margin-bottom:4px;}
+.completion-banner-sub{font-size:12px;color:#3a8a00;margin-bottom:12px;}
+.completion-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* INVOICE SUMMARY */
+.invoice-summary{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:14px;font-size:12.5px;
+  font-family:var(--FM);
+}
+.invoice-row{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);}
+.invoice-row:last-child{border:none;font-weight:700;font-size:13px;padding-top:8px;}
+.invoice-row.total .val{color:var(--accent);}
+
+/* DASHBOARD COMPLETED ALERT */
+.dash-alert{
+  background:linear-gradient(135deg,rgba(58,138,0,.08),rgba(10,122,90,.06));
+  border:1.5px solid rgba(58,138,0,.2);
+  border-radius:var(--radius);padding:12px 16px;
+  margin-bottom:20px;display:none;cursor:pointer;
+  transition:all .15s;
+}
+.dash-alert:hover{border-color:rgba(58,138,0,.4);background:rgba(58,138,0,.12);}
+.dash-alert.show{display:flex;align-items:center;gap:12px;}
+.dash-alert-icon{font-size:22px;flex-shrink:0;}
+.dash-alert-text{flex:1;}
+.dash-alert-title{font-weight:700;font-size:13.5px;color:#2a6a00;}
+.dash-alert-sub{font-size:11.5px;color:#3a8a00;margin-top:1px;}
+.dash-alert-arrow{color:#3a8a00;font-size:16px;}
+
+/* LIGHTBOX */
+.lightbox{
+  position:fixed;inset:0;background:rgba(0,0,0,.92);
+  z-index:500;display:none;align-items:center;justify-content:center;
+  padding:20px;
+}
+.lightbox.open{display:flex;}
+.lightbox img{max-width:100%;max-height:90vh;border-radius:10px;object-fit:contain;}
+.lightbox-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.lightbox-label{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.6);color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;}
+.team-mgmt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.team-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:all .15s;}
+.team-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.1);border-color:var(--border2);}
+.team-card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.team-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;flex-shrink:0;}
+.team-info{flex:1;min-width:0;}
+.team-name{font-weight:700;font-size:15px;margin-bottom:1px;}
+.team-role-badge{font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:6px;font-weight:500;}
+.team-contact{font-size:11.5px;color:var(--text2);display:flex;flex-direction:column;gap:2px;}
+.team-spec-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.spec-tag{font-size:10px;padding:2px 8px;border-radius:5px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);}
+.team-card-actions{display:flex;gap:7px;}
+.team-job-box{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:9px 11px;margin-top:10px;}
+.team-job-lbl{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);margin-bottom:3px;}
+.team-pin-badge{display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid rgba(58,138,0,.2);border-radius:6px;padding:3px 9px;font-size:11px;color:var(--accent);font-weight:600;cursor:pointer;transition:all .15s;}
+.team-pin-badge:hover{background:rgba(58,138,0,.18);}
+
+/* EMAIL PREVIEW */
+.email-preview-wrap{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.email-preview-bar{background:var(--surface3);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:8px;}
+.email-preview-dot{width:10px;height:10px;border-radius:50%;}
+.email-preview-body{padding:0;}
 
 /* ═══ FIELD VIEW ═══ */
 .field-header{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;}
@@ -270,6 +414,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--FB);font-size:14px
 .overlay.open{display:flex;}
 .modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;width:100%;max-width:500px;max-height:92vh;overflow-y:auto;animation:up .2s ease;box-shadow:0 8px 40px rgba(0,0,0,.15);}
 @keyframes up{from{transform:translateY(14px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
 .modal-head{padding:17px 21px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .modal-title{font-family:var(--F);font-weight:700;font-size:15px;}
 .modal-close{width:27px;height:27px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;}
@@ -324,47 +469,104 @@ textarea{resize:vertical;min-height:70px;}
 /* ═══ LOGIN SCREEN ═══ */
 #loginScreen{
   position:fixed;inset:0;z-index:999;
-  background:var(--bg);
   display:flex;align-items:center;justify-content:center;
   padding:20px;
+  overflow:hidden;
 }
-.login-wrap{width:100%;max-width:400px;animation:up .3s ease;}
-.login-logo{text-align:center;margin-bottom:36px;}
-.login-logo-mark{font-family:var(--F);font-weight:800;font-size:28px;color:var(--accent);letter-spacing:-.5px;}
-.login-logo-sub{font-family:var(--FM);font-size:10px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;}
-.login-title{font-family:var(--F);font-weight:700;font-size:19px;margin-bottom:6px;text-align:center;color:var(--text);}
-.login-sub{font-size:12.5px;color:var(--text3);text-align:center;margin-bottom:28px;}
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
-.profile-card{
-  background:var(--surface);border:2px solid var(--border);
-  border-radius:12px;padding:18px 14px;cursor:pointer;
-  transition:all .2s;text-align:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);
+/* Animated background */
+.login-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#0d1a0d 0%,#1a2e1a 40%,#0a1a12 70%,#0d1a0d 100%);
 }
-.profile-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.12);}
-.profile-card.selected{border-color:var(--accent);background:var(--accent-dim);}
-.profile-avatar{
-  width:46px;height:46px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--F);font-weight:700;font-size:18px;
-  margin:0 auto 10px;
+.login-bg::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 30%, rgba(58,138,0,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 70%, rgba(10,122,90,.14) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 60% 20%, rgba(58,138,0,.08) 0%, transparent 50%);
 }
-.profile-name{font-family:var(--F);font-weight:700;font-size:14px;margin-bottom:2px;color:var(--text);}
-.profile-role{font-size:11px;color:var(--text3);}
-.login-pin-wrap{margin-bottom:16px;}
-.login-pin-label{font-family:var(--FM);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.login-pin{text-align:center;font-size:22px;letter-spacing:8px;font-family:var(--FM);color:var(--text);}
-.login-error{font-size:12px;color:var(--red);text-align:center;margin-bottom:10px;min-height:18px;}
-.pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
-.pin-btn{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:9px;padding:14px;font-family:var(--F);font-weight:700;font-size:18px;
-  cursor:pointer;transition:all .15s;color:var(--text);
-  box-shadow:0 1px 4px rgba(0,0,0,.06);
+.login-bg-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(58,138,0,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(58,138,0,.06) 1px, transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
 }
-.pin-btn:hover{background:var(--surface2);border-color:var(--border2);}
-.pin-btn:active{transform:scale(.95);}
-.pin-btn.del{font-size:14px;color:var(--text2);}
+.login-card{
+  position:relative;z-index:1;
+  width:100%;max-width:380px;
+  background:rgba(255,255,255,.97);
+  border-radius:20px;
+  box-shadow:0 24px 80px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.1);
+  overflow:hidden;
+  animation:up .35s cubic-bezier(.16,1,.3,1);
+}
+.login-card-header{
+  background:linear-gradient(135deg,#1a2e1a,#0d1a0d);
+  padding:32px 28px 28px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.login-card-header::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 100%,rgba(58,138,0,.25),transparent);
+}
+.login-brand{position:relative;z-index:1;}
+.login-brand-icon{font-size:36px;margin-bottom:10px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));}
+.login-brand-name{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:3px;}
+.login-brand-sub{font-size:9.5px;color:rgba(184,240,106,.7);letter-spacing:2px;text-transform:uppercase;}
+
+.login-card-body{padding:28px;}
+.login-field-label{font-size:10px;font-weight:600;color:#4a5e4a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.login-input{
+  width:100%;padding:11px 14px;
+  background:#f4f6f4;border:1.5px solid #dde3dd;
+  border-radius:9px;font-size:14px;color:#1a221a;
+  outline:none;transition:all .15s;margin-bottom:16px;
+  font-family:-apple-system,'Segoe UI',sans-serif;
+}
+.login-input:focus{border-color:#3a8a00;background:#fff;box-shadow:0 0 0 3px rgba(58,138,0,.1);}
+.login-input::placeholder{color:#aabcaa;}
+
+/* PIN dots row */
+.pin-dots-row{display:flex;gap:10px;justify-content:center;margin:6px 0 16px;}
+.pin-dot{
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid #dde3dd;background:transparent;
+  transition:all .15s;
+}
+.pin-dot.filled{background:#3a8a00;border-color:#3a8a00;transform:scale(1.1);}
+
+/* Numpad */
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;}
+.np-btn{
+  background:#f4f6f4;border:1.5px solid #e8ede8;
+  border-radius:10px;padding:13px 8px;
+  font-size:18px;font-weight:700;color:#1a221a;
+  cursor:pointer;transition:all .12s;
+  display:flex;flex-direction:column;align-items:center;gap:1px;
+}
+.np-btn:hover{background:#eaf0ea;border-color:#c8d2c8;transform:translateY(-1px);}
+.np-btn:active{transform:scale(.94);}
+.np-btn.action{font-size:13px;font-weight:500;color:#4a5e4a;}
+.np-letters{font-size:8px;color:#8a9e8a;font-weight:400;letter-spacing:.5px;}
+
+.login-submit{
+  width:100%;padding:13px;
+  background:#3a8a00;color:#fff;
+  border:none;border-radius:10px;
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:all .15s;
+  font-family:-apple-system,'Segoe UI',sans-serif;
+}
+.login-submit:hover{background:#2a6a00;transform:translateY(-1px);box-shadow:0 4px 16px rgba(58,138,0,.3);}
+.login-submit:active{transform:scale(.98);}
+.login-error-msg{font-size:12px;color:#b02020;text-align:center;margin-top:10px;min-height:18px;font-weight:500;}
+
+.login-footer{padding:14px 28px 20px;text-align:center;border-top:1px solid #f0f3f0;}
+.login-footer-text{font-size:10.5px;color:#8a9e8a;}
 
 /* ═══ PROFILE INDICATOR (topbar) ═══ */
 .profile-pill{
@@ -392,57 +594,47 @@ textarea{resize:vertical;min-height:70px;}
 
 <!-- ═══ LOGIN SCREEN ═══ -->
 <div id="loginScreen">
-  <div class="login-wrap">
-    <div class="login-logo">
-      <div class="login-logo-mark">🧠 Second Brain</div>
-      <div class="login-logo-sub">Vinny & Wes Flooring</div>
-    </div>
-    <div class="login-title">Who's logging in?</div>
-    <div class="login-sub">Select your profile to continue</div>
-
-    <div class="profile-grid" id="profileGrid">
-      <div class="profile-card" onclick="selectProfile('vinny')" id="pc-vinny">
-        <div class="profile-avatar" style="background:rgba(58,138,0,.12);color:#2a6a00;">V</div>
-        <div class="profile-name">Vinny</div>
-        <div class="profile-role">Owner · Full Access</div>
-      </div>
-      <div class="profile-card" onclick="selectProfile('carlos')" id="pc-carlos">
-        <div class="profile-avatar" style="background:rgba(10,122,90,.12);color:#0a7a5a;">C</div>
-        <div class="profile-name">Carlos</div>
-        <div class="profile-role">Lead Installer</div>
-      </div>
-      <div class="profile-card" onclick="selectProfile('pedro')" id="pc-pedro">
-        <div class="profile-avatar" style="background:rgba(192,90,0,.12);color:#c05a00;">P</div>
-        <div class="profile-name">Pedro</div>
-        <div class="profile-role">Installer</div>
-      </div>
-      <div class="profile-card" onclick="selectProfile('marcos')" id="pc-marcos">
-        <div class="profile-avatar" style="background:rgba(26,90,170,.12);color:#1a5aaa;">M</div>
-        <div class="profile-name">Marcos</div>
-        <div class="profile-role">Installer</div>
+  <div class="login-bg"><div class="login-bg-grid"></div></div>
+  <div class="login-card">
+    <div class="login-card-header">
+      <div class="login-brand">
+        <div class="login-brand-icon">🧠</div>
+        <div class="login-brand-name">Second Brain</div>
+        <div class="login-brand-sub">Vinny & Wes Flooring</div>
       </div>
     </div>
+    <div class="login-card-body">
+      <div class="login-field-label">Username</div>
+      <input class="login-input" type="text" id="loginUsername" placeholder="Enter your name..." autocomplete="off" autocorrect="off" spellcheck="false"/>
 
-    <div id="pinSection" style="display:none;">
-      <div class="login-pin-wrap">
-        <div class="login-pin-label">Enter PIN</div>
-        <div class="login-pin" id="pinDisplay">_ _ _ _</div>
+      <div class="login-field-label">PIN Code</div>
+      <div class="pin-dots-row" id="pinDotsRow">
+        <div class="pin-dot" id="pd0"></div>
+        <div class="pin-dot" id="pd1"></div>
+        <div class="pin-dot" id="pd2"></div>
+        <div class="pin-dot" id="pd3"></div>
       </div>
-      <div class="login-error" id="pinError"></div>
-      <div class="pinpad">
-        <button class="pin-btn" onclick="pinInput('1')">1</button>
-        <button class="pin-btn" onclick="pinInput('2')">2</button>
-        <button class="pin-btn" onclick="pinInput('3')">3</button>
-        <button class="pin-btn" onclick="pinInput('4')">4</button>
-        <button class="pin-btn" onclick="pinInput('5')">5</button>
-        <button class="pin-btn" onclick="pinInput('6')">6</button>
-        <button class="pin-btn" onclick="pinInput('7')">7</button>
-        <button class="pin-btn" onclick="pinInput('8')">8</button>
-        <button class="pin-btn" onclick="pinInput('9')">9</button>
-        <button class="pin-btn del" onclick="pinBack()">←</button>
-        <button class="pin-btn" onclick="pinInput('0')">0</button>
-        <button class="pin-btn del" onclick="cancelPin()">✕</button>
+
+      <div class="numpad">
+        <button class="np-btn" onclick="pinInput('1')">1<span class="np-letters"></span></button>
+        <button class="np-btn" onclick="pinInput('2')">2<span class="np-letters">ABC</span></button>
+        <button class="np-btn" onclick="pinInput('3')">3<span class="np-letters">DEF</span></button>
+        <button class="np-btn" onclick="pinInput('4')">4<span class="np-letters">GHI</span></button>
+        <button class="np-btn" onclick="pinInput('5')">5<span class="np-letters">JKL</span></button>
+        <button class="np-btn" onclick="pinInput('6')">6<span class="np-letters">MNO</span></button>
+        <button class="np-btn" onclick="pinInput('7')">7<span class="np-letters">PQRS</span></button>
+        <button class="np-btn" onclick="pinInput('8')">8<span class="np-letters">TUV</span></button>
+        <button class="np-btn" onclick="pinInput('9')">9<span class="np-letters">WXYZ</span></button>
+        <button class="np-btn action" onclick="pinBack()">⌫</button>
+        <button class="np-btn" onclick="pinInput('0')">0</button>
+        <button class="np-btn action" onclick="clearLogin()">C</button>
       </div>
+
+      <button class="login-submit" onclick="submitLogin()">Sign In →</button>
+      <div class="login-error-msg" id="loginError"></div>
+    </div>
+    <div class="login-footer">
+      <div class="login-footer-text">Enter your name and 4-digit PIN to access your workspace</div>
     </div>
   </div>
 </div>
@@ -469,9 +661,14 @@ textarea{resize:vertical;min-height:70px;}
     <div class="nav-item" id="nav-field" onclick="go('field')"><span class="nav-icon">📲</span>Field View</div>
     <div class="nav-sec">Finance</div>
     <div class="nav-item" id="nav-finance" onclick="go('finance')"><span class="nav-icon">💰</span>Finance</div>
+    <div class="nav-item" id="nav-partners" onclick="go('partners')"><span class="nav-icon">🤝</span>Partners</div>
     <div class="nav-item" id="nav-messages" onclick="go('messages')"><span class="nav-icon">💬</span>Messages</div>
   </nav>
   <div class="sidebar-bottom">
+    <div id="storageIndicator" style="padding:4px 10px 6px;font-size:10px;color:var(--text3);display:flex;align-items:center;justify-content:space-between;">
+      <span id="storageUsed">💾 —</span>
+      <span onclick="clearAllData()" style="cursor:pointer;color:var(--red);opacity:.7;font-size:10px;" title="Reset all data to defaults">Reset data</span>
+    </div>
     <div class="user-pill" onclick="logout()">
       <div class="avatar" id="sidebarAvatar">V</div>
       <div><div class="user-name" id="sidebarName">Vinny</div><div class="user-role" id="sidebarRole">Owner · PT</div></div>
@@ -498,6 +695,14 @@ textarea{resize:vertical;min-height:70px;}
 
     <!-- DASHBOARD -->
     <div class="view active" id="view-dashboard">
+      <div class="dash-alert" id="dashCompletionAlert" onclick="go('jobs')">
+        <div class="dash-alert-icon">🎉</div>
+        <div class="dash-alert-text">
+          <div class="dash-alert-title" id="dashAlertTitle">Job completed!</div>
+          <div class="dash-alert-sub">Tap to review and generate invoice in QuickBooks</div>
+        </div>
+        <div class="dash-alert-arrow">→</div>
+      </div>
       <div class="stats" id="dashStats"></div>
       <div class="sec-row"><div class="sec-title">Pipeline</div><button class="btn btn-ghost btn-sm" onclick="go('pipeline')">Full board →</button></div>
       <div class="pipeline-wrap"><div class="pipeline" id="dashPipe"></div></div>
@@ -618,7 +823,16 @@ textarea{resize:vertical;min-height:70px;}
     </div>
 
     <!-- TEAM -->
-    <div class="view" id="view-team"><div class="team-cards" id="teamCards"></div></div>
+    <div class="view" id="view-team">
+      <div class="team-mgmt-header">
+        <div>
+          <div class="sec-title">Team</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px;">Manage installers and send app invites</div>
+        </div>
+        <button class="btn btn-primary" onclick="openAddInstaller()">＋ Add Installer</button>
+      </div>
+      <div class="team-grid" id="teamCards"></div>
+    </div>
 
     <!-- FIELD -->
     <div class="view" id="view-field">
@@ -646,6 +860,28 @@ textarea{resize:vertical;min-height:70px;}
         <div class="fin-title">Payment Status</div>
         <div class="payment-list" id="paymentList"></div>
       </div>
+    </div>
+
+    <!-- PARTNERS -->
+    <div class="view" id="view-partners">
+      <div class="sec-row">
+        <div>
+          <div class="sec-title">Partners · B2B</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px;">Builders, designers, flooring companies and property managers</div>
+        </div>
+        <button class="btn btn-primary" onclick="openAddPartner()">＋ Add Partner</button>
+      </div>
+      <!-- Stats row -->
+      <div class="stats" id="partnerStats" style="margin-bottom:20px;"></div>
+      <!-- Filter tabs -->
+      <div class="tabs" id="partnerTabs">
+        <div class="tab active" onclick="filterPartners(this,'all')">All</div>
+        <div class="tab" onclick="filterPartners(this,'Builder')">Builders</div>
+        <div class="tab" onclick="filterPartners(this,'Interior Designer')">Designers</div>
+        <div class="tab" onclick="filterPartners(this,'Flooring Company')">Flooring Co</div>
+        <div class="tab" onclick="filterPartners(this,'Property Manager')">Property Mgr</div>
+      </div>
+      <div id="partnerGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;"></div>
     </div>
 
     <!-- MESSAGES -->
@@ -698,6 +934,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="fr"><label>Address</label><input type="text" id="f_address" placeholder="Ex: Miami, FL — 1,200 SF"/></div>
       <div class="fr"><label>Notes</label><textarea id="f_notes" placeholder="Project details..."></textarea></div>
       <div class="fr"><label>Priority</label><select id="f_priority"><option value="high">🔴 High</option><option value="med" selected>🟡 Medium</option><option value="low">⚪ Low</option></select></div>
+      <div class="fr"><label>B2B Partner (optional)</label><select id="f_partner"><option value="">— Direct / No partner —</option></select></div>
     </div>
     <div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal('modalNewLead')">Cancel</button><button class="btn btn-primary" onclick="saveLead()">Save Lead</button></div>
   </div>
@@ -713,6 +950,7 @@ textarea{resize:vertical;min-height:70px;}
       <div class="fr2"><div><label>Start Date</label><input type="date" id="j_start"/></div><div><label>Duration</label><select id="j_duration"><option>1 day</option><option>2 days</option><option>3 days</option><option>1 week</option><option>2 weeks</option></select></div></div>
       <div class="fr2"><div><label>Crew Lead</label><select id="j_crew"><option>Carlos</option><option>Pedro</option><option>Marcos</option><option>Vinny</option></select></div><div><label>Value ($)</label><input type="number" id="j_value" placeholder="8500"/></div></div>
       <div class="fr"><label>Notes</label><textarea id="j_notes" placeholder="Material notes, access info..."></textarea></div>
+      <div class="fr"><label>B2B Partner (optional)</label><select id="j_partner"><option value="">— Direct / No partner —</option></select></div>
     </div>
     <div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal('modalNewJob')">Cancel</button><button class="btn btn-primary" onclick="saveJob()">Create Job</button></div>
   </div>
@@ -732,9 +970,20 @@ textarea{resize:vertical;min-height:70px;}
 </div>
 
 <div class="overlay" id="modalJobDetail">
-  <div class="modal">
+  <div class="modal" style="max-width:540px;">
     <div class="modal-head"><div><div class="modal-title" id="jd_name"></div><div style="font-size:11px;color:var(--text3);margin-top:2px;" id="jd_sub"></div></div><button class="modal-close" onclick="closeModal('modalJobDetail')">✕</button></div>
     <div class="modal-body">
+      <!-- Completion banner -->
+      <div class="completion-banner" id="jd_completion_banner">
+        <div class="completion-banner-title">🎉 Job Completed!</div>
+        <div class="completion-banner-sub">Ready to invoice. Generate a summary to use in QuickBooks.</div>
+        <div class="completion-actions">
+          <button class="btn btn-primary btn-sm" onclick="generateInvoiceSummary()">📋 Invoice Summary</button>
+          <button class="btn btn-ghost btn-sm" onclick="generateJobPDF()">⬇ Download Job PDF</button>
+          <button class="btn btn-ghost btn-sm" onclick="openQuickBooks()">🔗 QuickBooks</button>
+        </div>
+      </div>
+
       <div class="det-sec"><div class="det-sec-title">Status</div><div class="status-chips" id="jd_chips"></div></div>
       <div class="det-sec"><div class="det-sec-title">Info</div><div class="det-grid" id="jd_grid"></div></div>
       <div class="det-sec">
@@ -742,9 +991,29 @@ textarea{resize:vertical;min-height:70px;}
         <div class="field-checklist" id="jd_checklist"></div>
         <div class="prog-wrap" style="margin-top:10px;"><div class="prog-bar" id="jd_prog"></div></div>
       </div>
+
+      <!-- Photos section -->
+      <div class="det-sec photo-section">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div class="det-sec-title" style="margin:0;">Photos</div>
+          <div style="display:flex;gap:5px;" id="jd_photo_counts"></div>
+        </div>
+        <div class="photo-tabs">
+          <div class="photo-tab active before" id="ptab_before" onclick="switchPhotoTab('before')">📷 Before</div>
+          <div class="photo-tab after" id="ptab_after" onclick="switchPhotoTab('after')">✅ After</div>
+        </div>
+        <div class="photo-grid" id="jd_photo_grid"></div>
+        <input type="file" id="photoFileInput" accept="image/*" multiple capture="environment" style="display:none;" onchange="handlePhotoUpload(event)"/>
+      </div>
+
       <div class="det-sec"><div class="det-sec-title">Notes</div><div id="jd_notes" style="font-size:12.5px;color:var(--text2);line-height:1.6;"></div></div>
     </div>
-    <div class="modal-foot"><button class="btn btn-danger btn-sm" onclick="deleteJob()">Delete</button><button class="btn btn-ghost" onclick="closeModal('modalJobDetail')">Close</button></div>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" onclick="deleteJob()">Delete</button>
+      <button class="btn btn-ghost" onclick="closeModal('modalJobDetail')">Close</button>
+      <button class="btn btn-ghost" id="jd_pdf_btn" style="display:none;" onclick="generateJobPDF()">⬇ PDF</button>
+      <button class="btn btn-primary" id="jd_invoice_btn" style="display:none;" onclick="generateInvoiceSummary()">📋 Invoice</button>
+    </div>
   </div>
 </div>
 
@@ -757,13 +1026,28 @@ const JOB_ST=[{id:'scheduled',label:'Scheduled',color:'#6aaaf0'},{id:'active',la
 const PIPE_COLS=[{id:'new',label:'New Lead',color:'#3e4a3e'},{id:'quoted',label:'Quote Sent',color:'#b8f06a'},{id:'followup',label:'Follow-up',color:'#f0a86a'},{id:'approved',label:'Approved',color:'#6af0c8'},{id:'scheduled',label:'Scheduled',color:'#6aaaf0'}];
 const CL=['Material ordered','Material delivered','Area prepared','Other trades done','Client confirmed start','Acclimation complete','Job started','Job completed','Client signed off'];
 const PRICES={'Hardwood Install':2.50,'Hardwood Sand & Finish':2.50,'LVP Install':1.90,'Tile Install':4.50,'Stairs - Oak':185,'Stairs - Carpet':55,'Demo / Remove Old Floor':0.80,'Subfloor Repair':3.50,'Transition Strips':45,'Baseboard Install':2.80};
-const TEAM=[
-  {name:'Carlos',role:'Lead Installer',color:'#0a7a5a',bg:'rgba(10,122,90,.12)'},
-  {name:'Pedro', role:'Installer',     color:'#c05a00',bg:'rgba(192,90,0,.12)'},
-  {name:'Marcos',role:'Installer',     color:'#1a5aaa',bg:'rgba(26,90,170,.12)'},
+const AVATAR_COLORS=[
+  {color:'#0a7a5a',bg:'rgba(10,122,90,.12)'},{color:'#c05a00',bg:'rgba(192,90,0,.12)'},
+  {color:'#1a5aaa',bg:'rgba(26,90,170,.12)'},{color:'#6a20aa',bg:'rgba(106,32,170,.12)'},
+  {color:'#b02020',bg:'rgba(176,32,32,.12)'},{color:'#3a8a00',bg:'rgba(58,138,0,.12)'},
 ];
 
-let leads=[
+// ══════════════════════════════════════════
+// LOCALSTORAGE — persist all data
+// ══════════════════════════════════════════
+const STORAGE_KEYS = {
+  leads:      'sb_leads',
+  jobs:       'sb_jobs',
+  installers: 'sb_installers',
+  partners:   'sb_partners',
+};
+
+const DEFAULT_INSTALLERS=[
+  {id:'carlos',name:'Carlos',fname:'Carlos',lname:'Mendes',phone:'(305) 555-1100',email:'carlos@email.com',role:'Lead Installer',specs:['Hardwood','Sand & Finish','Stairs'],notes:'Lead of the crew. Speaks Portuguese and English.',pin:'1111',colorIdx:0},
+  {id:'pedro', name:'Pedro', fname:'Pedro', lname:'Silva', phone:'(305) 555-2200',email:'pedro@email.com', role:'Installer',      specs:['Hardwood','LVP'],              notes:'Available Mon–Sat. Has own vehicle.',pin:'2222',colorIdx:1},
+  {id:'marcos',name:'Marcos',fname:'Marcos',lname:'Costa', phone:'(305) 555-3300',email:'marcos@email.com',role:'Installer',      specs:['LVP','Tile','Demo'],           notes:'Subcontractor — send 1099 at year end.',pin:'3333',colorIdx:2},
+];
+const DEFAULT_LEADS=[
   {id:1,name:'Michael Torres',phone:'(305) 555-0101',email:'michael@email.com',type:'residential',source:'Instagram',service:'Hardwood',value:8500,address:'Coral Gables, FL — 2,100 SF',notes:'Wants light oak.',priority:'high',status:'approved',created:'Apr 14'},
   {id:2,name:'Silva Construction',phone:'(786) 555-0202',email:'ops@silva.com',type:'builder',source:'Builder Partner',service:'LVP',value:22000,address:'Doral, FL — 6 units',notes:'Repeating builder, net-30.',priority:'high',status:'quoted',created:'Apr 15'},
   {id:3,name:'Amanda Chen',phone:'(305) 555-0303',email:'achen@mail.com',type:'residential',source:'Referral',service:'Tile',value:4200,address:'Brickell, FL — kitchen+baths',notes:'Specific grout color.',priority:'med',status:'followup',created:'Apr 13'},
@@ -772,18 +1056,82 @@ let leads=[
   {id:6,name:'Bella Interiors',phone:'(305) 555-0606',email:'hello@bellaint.com',type:'commercial',source:'Referral',service:'LVP',value:12500,address:'Wynwood, FL — 3,100 SF',notes:'Interior design firm.',priority:'med',status:'quoted',created:'Apr 17'},
   {id:7,name:'John Pereira',phone:'(786) 555-0707',email:'jpereira@mail.com',type:'residential',source:'Instagram',service:'Stairs',value:2800,address:'Hialeah, FL — 14 steps',notes:'Oak stairs.',priority:'low',status:'new',created:'Apr 18'},
 ];
-
-let jobs=[
-  {id:101,client:'Michael Torres',address:'842 Alhambra Circle, Coral Gables, FL',service:'Hardwood',size:'2,100 SF',crew:'Carlos',start:'2026-04-21',duration:'3 days',value:8500,status:'scheduled',notes:'Light oak. Acclimation done.',checklist:{0:true,1:true,2:false,3:false,4:true,5:true,6:false,7:false,8:false},deposit:4250,paid:false},
-  {id:102,client:'Dave & Karen Ross',address:'6215 SW 120th St, Pinecrest, FL',service:'Hardwood',size:'1,700 SF',crew:'Pedro',start:'2026-04-22',duration:'2 days',value:6800,status:'active',notes:'Dog must be crated.',checklist:{0:true,1:true,2:true,3:true,4:true,5:true,6:true,7:false,8:false},deposit:3400,paid:false},
-  {id:103,client:'Bella Interiors',address:'178 NW 23rd St, Wynwood, FL',service:'LVP',size:'3,100 SF',crew:'Marcos',start:'2026-04-24',duration:'1 week',value:12500,status:'scheduled',notes:'After 6pm only.',checklist:{0:true,1:false,2:false,3:false,4:false,5:false,6:false,7:false,8:false},deposit:6250,paid:true},
-  {id:104,client:'Amanda Chen',address:'1400 S Miami Ave, Brickell, FL',service:'Tile',size:'480 SF',crew:'Carlos',start:'2026-04-28',duration:'2 days',value:4200,status:'scheduled',notes:'Mapei Warm Gray grout.',checklist:{0:false,1:false,2:false,3:false,4:false,5:false,6:false,7:false,8:false},deposit:2100,paid:false},
+const DEFAULT_JOBS=[
+  {id:101,client:'Michael Torres',address:'842 Alhambra Circle, Coral Gables, FL',service:'Hardwood',size:'2,100 SF',crew:'Carlos',start:'2026-04-21',duration:'3 days',value:8500,status:'scheduled',notes:'Light oak. Acclimation done.',checklist:{0:true,1:true,2:false,3:false,4:true,5:true,6:false,7:false,8:false},deposit:4250,paid:false,photos:{before:[],after:[]}},
+  {id:102,client:'Dave & Karen Ross',address:'6215 SW 120th St, Pinecrest, FL',service:'Hardwood',size:'1,700 SF',crew:'Pedro',start:'2026-04-22',duration:'2 days',value:6800,status:'active',notes:'Dog must be crated.',checklist:{0:true,1:true,2:true,3:true,4:true,5:true,6:true,7:false,8:false},deposit:3400,paid:false,photos:{before:[],after:[]}},
+  {id:103,client:'Bella Interiors',address:'178 NW 23rd St, Wynwood, FL',service:'LVP',size:'3,100 SF',crew:'Marcos',start:'2026-04-24',duration:'1 week',value:12500,status:'scheduled',notes:'After 6pm only.',checklist:{0:true,1:false,2:false,3:false,4:false,5:false,6:false,7:false,8:false},deposit:6250,paid:true,photos:{before:[],after:[]}},
+  {id:104,client:'Amanda Chen',address:'1400 S Miami Ave, Brickell, FL',service:'Tile',size:'480 SF',crew:'Carlos',start:'2026-04-28',duration:'2 days',value:4200,status:'scheduled',notes:'Mapei Warm Gray grout.',checklist:{0:false,1:false,2:false,3:false,4:false,5:false,6:false,7:false,8:false},deposit:2100,paid:false,photos:{before:[],after:[]}},
 ];
+
+const DEFAULT_PARTNERS=[
+  {id:'p1',company:'Silva Construction',type:'Builder',contact:'John Silva',title:'Project Manager',phone:'(786) 555-0202',email:'ops@silva.com',website:'silvaconst.com',terms:'Net-30',discount:'$1.90/SF LVP flat rate',notes:'Long-term relationship. Pays reliably net-30. Has 3-4 condo projects per year.'},
+  {id:'p2',company:'Bella Interiors',type:'Interior Designer',contact:'Isabella Martins',title:'Lead Designer',phone:'(305) 555-0606',email:'hello@bellaint.com',website:'bellainteriors.com',terms:'50% deposit',discount:'10% off labor',notes:'High-end residential projects. Very specific on materials — always confirm before ordering.'},
+  {id:'p3',company:'Sunrise Property Group',type:'Property Manager',contact:'Mark Greene',title:'Maintenance Director',phone:'(954) 555-0404',email:'pm@sunrise.com',website:'sunrisepropertygroup.com',terms:'Net-15',discount:'',notes:'Manages 8 hotel properties. Emergency calls occasionally. Good volume.'},
+];
+
+function loadData(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch(e) { return fallback; }
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEYS.leads,      JSON.stringify(leads));
+    localStorage.setItem(STORAGE_KEYS.jobs,       JSON.stringify(jobs));
+    localStorage.setItem(STORAGE_KEYS.installers, JSON.stringify(installers));
+    localStorage.setItem(STORAGE_KEYS.partners,   JSON.stringify(partners));
+    updateStorageIndicator();
+  } catch(e) {
+    console.warn('Storage full:', e);
+    if(e.name === 'QuotaExceededError') {
+      alert('⚠️ Storage is getting full. Consider removing old job photos to free up space.');
+    }
+  }
+}
+
+let installers = loadData(STORAGE_KEYS.installers, DEFAULT_INSTALLERS);
+let leads      = loadData(STORAGE_KEYS.leads,      DEFAULT_LEADS);
+let jobs       = loadData(STORAGE_KEYS.jobs,       DEFAULT_JOBS);
+let partners   = loadData(STORAGE_KEYS.partners,   DEFAULT_PARTNERS);
+// Ensure all jobs have photos field
+jobs = jobs.map(j => ({...j, photos: j.photos || {before:[], after:[]}}));
+
+let currentInstallerId = null;
+let pendingInviteInstaller = null;
+let customSpecs = []; // tracks custom specialties added in the form
+
+function addCustomSpec() {
+  const input = document.getElementById('i_custom_spec');
+  const val = input.value.trim();
+  if (!val) return;
+  if (customSpecs.includes(val)) { input.value=''; return; }
+  customSpecs.push(val);
+  input.value = '';
+  renderCustomSpecTags();
+}
+
+function removeCustomSpec(spec) {
+  customSpecs = customSpecs.filter(s => s !== spec);
+  renderCustomSpecTags();
+}
+
+function renderCustomSpecTags() {
+  const el = document.getElementById('customSpecTags');
+  if (!el) return;
+  el.innerHTML = customSpecs.map(s =>
+    `<span style="display:inline-flex;align-items:center;gap:5px;background:var(--accent-dim);border:1px solid rgba(58,138,0,.2);border-radius:5px;padding:3px 8px;font-size:11.5px;color:var(--accent);">
+      ${s} <span onclick="removeCustomSpec('${s}')" style="cursor:pointer;opacity:.7;font-size:13px;">✕</span>
+    </span>`
+  ).join('');
+}
 
 let estItems=[];
 let currentLeadId=null,currentJobId=null,pipeFilter='all',jobFilter='all';
 let schedView='week',schedOffset=0;
 let currentMsgId=1;
+let currentPhotoTab='before'; // 'before' | 'after'
 
 const MSGS={
   1:{name:'Michael Torres',service:'Hardwood · Coral Gables',messages:[
@@ -823,7 +1171,7 @@ function go(view){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
   const ni=document.getElementById('nav-'+view);if(ni)ni.classList.add('active');
-  const titles={dashboard:'Dashboard',pipeline:'Pipeline',leads:'Leads',estimates:'Estimates',jobs:'Jobs',schedule:'Schedule',team:'Team',field:'Field View',finance:'Finance',messages:'Messages'};
+  const titles={dashboard:'Dashboard',pipeline:'Pipeline',leads:'Leads',estimates:'Estimates',jobs:'Jobs',schedule:'Schedule',team:'Team',field:'Field View',finance:'Finance',partners:'Partners · B2B',messages:'Messages'};
   document.getElementById('pageTitle').textContent=titles[view]||view;
   document.getElementById('searchWrap').style.display=view==='leads'?'block':'none';
   const btn=document.getElementById('topBtn');
@@ -837,6 +1185,7 @@ function go(view){
   if(view==='team')renderTeam();
   if(view==='field')renderField();
   if(view==='finance')renderFinance();
+  if(view==='partners')renderPartners();
   if(view==='messages')renderMessages();
   closeSidebar();
 }
@@ -876,7 +1225,15 @@ function renderPipeline(elId,maxCols,filter){
 function leadCardHTML(l){
   const tc={residential:'tr',builder:'tb',commercial:'tc'}[l.type]||'';
   const pc={high:'ph',med:'pm',low:'pl'}[l.priority]||'';
-  return `<div class="card" onclick="openLeadDetail(${l.id})"><div class="prio-dot ${pc}"></div><span class="type-tag ${tc}">${l.type}</span><div class="card-name">${l.name}</div><div class="card-det">${l.service} · ${l.address.split('—')[0].trim()}</div><div class="card-foot"><span class="card-val">$${l.value.toLocaleString()}</span><span class="card-date">${l.created}</span></div></div>`;
+  const partner=l.partnerId?partners.find(x=>x.id===l.partnerId):null;
+  return `<div class="card" onclick="openLeadDetail(${l.id})">
+    <div class="prio-dot ${pc}"></div>
+    <span class="type-tag ${tc}">${l.type}</span>
+    ${partner?`<span class="type-tag" style="background:rgba(58,138,0,.1);color:#3a8a00;margin-left:4px;">🤝 ${partner.company}</span>`:''}
+    <div class="card-name">${l.name}</div>
+    <div class="card-det">${l.service} · ${l.address.split('—')[0].trim()}</div>
+    <div class="card-foot"><span class="card-val">$${l.value.toLocaleString()}</span><span class="card-date">${l.created}</span></div>
+  </div>`;
 }
 
 function filterPipe(el,f){document.querySelectorAll('#pipTabs .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');pipeFilter=f;renderPipeline('fullPipe',null,pipeFilter);}
@@ -1000,11 +1357,231 @@ function hexRgb(hex){const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(he
 // TEAM
 // ══════════════════════════════════════════
 function renderTeam(){
-  document.getElementById('teamCards').innerHTML=TEAM.map(m=>{
-    const tj=jobs.filter(j=>j.crew===m.name&&j.status!=='done');const j=tj[0];
-    const pct=j?Math.round(Object.values(j.checklist).filter(Boolean).length/CL.length*100):0;
-    return `<div class="team-card"><div class="team-avatar" style="background:${m.bg};color:${m.color};">${m.name[0]}</div><div class="team-name">${m.name}</div><div class="team-role">${m.role}</div>${j?`<div class="team-job"><div class="team-job-lbl">Current Job</div><div class="team-job-name">${j.client}</div><div class="team-job-addr" style="font-size:11px;color:var(--text3);">${j.service} · ${j.address.split(',')[0]}</div><div style="margin-top:7px;"><div style="display:flex;justify-content:space-between;margin-bottom:3px;"><span style="font-family:var(--FM);font-size:9px;color:var(--text3);">Progress</span><span style="font-family:var(--FM);font-size:9px;color:var(--accent);">${pct}%</span></div><div class="prog-wrap"><div class="prog-bar" style="width:${pct}%"></div></div></div></div>`:`<div class="team-job" style="color:var(--text3);font-size:12px;text-align:center;padding:14px;">No active job</div>`}</div>`;
+  const el = document.getElementById('teamCards');
+  if (!el) return;
+  if (!installers.length) {
+    el.innerHTML = `<div class="empty" style="grid-column:1/-1;"><div class="empty-icon">👷</div><div class="empty-title">No installers yet</div><div style="font-size:12px;margin-top:4px;">Click "Add Installer" to get started</div></div>`;
+    return;
+  }
+  el.innerHTML = installers.map(m => {
+    const c = AVATAR_COLORS[m.colorIdx % AVATAR_COLORS.length];
+    const activeJob = jobs.find(j => j.crew === m.name && j.status !== 'done');
+    const pct = activeJob ? Math.round(Object.values(activeJob.checklist).filter(Boolean).length / CL.length * 100) : 0;
+    return `
+    <div class="team-card">
+      <div class="team-card-top">
+        <div class="team-avatar" style="background:${c.bg};color:${c.color};">${m.fname[0]}${m.lname?m.lname[0]:''}</div>
+        <div class="team-info">
+          <div class="team-name">${m.fname} ${m.lname||''}</div>
+          <span class="team-role-badge" style="background:${c.bg};color:${c.color};">${m.role}</span>
+          <div class="team-contact">
+            ${m.phone ? `<span>📞 ${m.phone}</span>` : ''}
+            ${m.email ? `<span>✉️ ${m.email}</span>` : ''}
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="openInstallerDetail('${m.id}')" style="flex-shrink:0;">···</button>
+      </div>
+      <div class="team-spec-tags">
+        ${m.specs.map(s => `<span class="spec-tag">${s}</span>`).join('')}
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${activeJob?'10px':'0'};">
+        <span class="team-pin-badge" onclick="openInstallerDetail('${m.id}')">🔑 PIN: ${m.pin}</span>
+        <button class="btn btn-ghost btn-sm" onclick="previewEmail('${m.id}')">📨 Send Invite</button>
+      </div>
+      ${activeJob ? `
+        <div class="team-job-box">
+          <div class="team-job-lbl">Current Job</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:2px;">${activeJob.client}</div>
+          <div style="font-size:11px;color:var(--text3);">${activeJob.service} · ${activeJob.address.split(',')[0]}</div>
+          <div style="margin-top:7px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+              <span style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;">Progress</span>
+              <span style="font-size:9px;color:var(--accent);font-weight:600;">${pct}%</span>
+            </div>
+            <div class="prog-wrap"><div class="prog-bar" style="width:${pct}%"></div></div>
+          </div>
+        </div>` : ''}
+    </div>`;
   }).join('');
+
+  // Sync PROFILES with installers for login
+  syncInstallerProfiles();
+  save();
+}
+
+function syncInstallerProfiles() {
+  // Keep owner, rebuild field profiles from installers
+  installers.forEach(m => {
+    PROFILES[m.id] = {
+      name: m.fname,
+      role: m.role,
+      pin: m.pin,
+      access: 'field',
+      color: AVATAR_COLORS[m.colorIdx % AVATAR_COLORS.length].color,
+      bg: AVATAR_COLORS[m.colorIdx % AVATAR_COLORS.length].bg,
+      initial: m.fname[0] + (m.lname ? m.lname[0] : ''),
+    };
+  });
+}
+
+// ── ADD INSTALLER ──
+function openAddInstaller() {
+  ['i_fname','i_lname','i_phone','i_email','i_pin','i_notes','i_custom_spec'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+  document.getElementById('i_role').value = 'Installer';
+  document.querySelectorAll('#specCheckboxes input[type=checkbox]').forEach(cb => cb.checked = false);
+  customSpecs = [];
+  renderCustomSpecTags();
+  document.getElementById('modalAddInstaller').classList.add('open');
+}
+
+function saveInstaller() {
+  const fname = document.getElementById('i_fname').value.trim();
+  const email = document.getElementById('i_email').value.trim();
+  if (!fname) { alert('First name is required.'); return; }
+  if (!email) { alert('Email is required to send the invite.'); return; }
+
+  const specs = [
+    ...[...document.querySelectorAll('#specCheckboxes input:checked')].map(cb => cb.value),
+    ...customSpecs,
+  ];
+  let pin = document.getElementById('i_pin').value.trim();
+  if (!pin || pin.length !== 4 || isNaN(pin)) {
+    pin = String(Math.floor(1000 + Math.random() * 9000));
+  }
+  const notes = document.getElementById('i_notes').value.trim();
+
+  const id = fname.toLowerCase().replace(/\s+/g,'_') + '_' + Date.now();
+  const colorIdx = installers.length % AVATAR_COLORS.length;
+  const inst = {
+    id, name: fname,
+    fname, lname: document.getElementById('i_lname').value.trim(),
+    phone: document.getElementById('i_phone').value.trim(),
+    email,
+    role: document.getElementById('i_role').value,
+    specs: specs.length ? specs : ['General'],
+    notes,
+    pin, colorIdx,
+  };
+
+  installers.push(inst);
+  closeModal('modalAddInstaller');
+  renderTeam();
+  // Auto-show email preview
+  setTimeout(() => previewEmail(id), 200);
+}
+
+// ── EMAIL PREVIEW ──
+function previewEmail(installerId) {
+  const m = installers.find(x => x.id === installerId);
+  if (!m) return;
+  pendingInviteInstaller = m;
+
+  document.getElementById('emailPreviewTo').textContent = `To: ${m.fname} ${m.lname||''} <${m.email}>`;
+
+  const appUrl = 'https://viniciusalbuquerque-ux.github.io/second-brain/';
+  const c = AVATAR_COLORS[m.colorIdx % AVATAR_COLORS.length];
+
+  document.getElementById('emailPreviewBody').innerHTML = `
+    <div style="font-family:-apple-system,'Segoe UI',sans-serif;max-width:500px;margin:0 auto;padding:24px;">
+      <div style="text-align:center;padding:24px 20px 20px;background:linear-gradient(135deg,#f0f6f0,#e8f0e8);border-radius:12px 12px 0 0;border:1px solid #dde3dd;border-bottom:none;">
+        <div style="font-size:28px;margin-bottom:6px;">🧠</div>
+        <div style="font-size:20px;font-weight:800;color:#3a8a00;letter-spacing:-0.5px;">Second Brain</div>
+        <div style="font-size:10px;color:#8a9e8a;letter-spacing:1.5px;text-transform:uppercase;margin-top:3px;">Vinny & Wes Flooring</div>
+      </div>
+      <div style="background:#fff;border:1px solid #dde3dd;border-top:none;border-radius:0 0 12px 12px;padding:24px;">
+        <div style="font-size:15px;font-weight:600;color:#1a221a;margin-bottom:8px;">Hey ${m.fname}! 👋</div>
+        <p style="font-size:13.5px;color:#4a5e4a;line-height:1.6;margin-bottom:16px;">
+          You've been added to the <strong>Vinny & Wes Flooring</strong> team app. Use it to see your daily jobs, update checklists and track your progress.
+        </p>
+        <div style="background:#f4f6f4;border-radius:10px;padding:16px 20px;margin-bottom:20px;text-align:center;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#8a9e8a;margin-bottom:10px;">Your Login Details</div>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <div style="background:#fff;border:1px solid #dde3dd;border-radius:8px;padding:10px 18px;">
+              <div style="font-size:9px;color:#8a9e8a;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Profile</div>
+              <div style="font-size:15px;font-weight:700;color:#1a221a;">${m.fname}</div>
+            </div>
+            <div style="background:#fff;border:2px solid #3a8a00;border-radius:8px;padding:10px 18px;">
+              <div style="font-size:9px;color:#8a9e8a;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">PIN</div>
+              <div style="font-size:22px;font-weight:800;color:#3a8a00;letter-spacing:6px;">${m.pin}</div>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:20px;">
+          <a href="${appUrl}" style="display:inline-block;background:#3a8a00;color:#fff;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:600;font-size:14px;">Open the App →</a>
+          <div style="font-size:10px;color:#8a9e8a;margin-top:8px;">${appUrl}</div>
+        </div>
+        <div style="background:#f4f6f4;border-radius:8px;padding:12px 14px;font-size:11.5px;color:#4a5e4a;line-height:1.6;">
+          <strong style="color:#1a221a;">How to install on your phone:</strong><br/>
+          Open the link in Safari (iPhone) or Chrome (Android), tap the Share button, then <em>"Add to Home Screen"</em>. The app will appear as an icon just like a regular app.
+        </div>
+      </div>
+      <div style="text-align:center;padding-top:16px;font-size:10.5px;color:#8a9e8a;">
+        Vinny & Wes Flooring · Second Brain OS<br/>
+        Questions? Call Vinny directly.
+      </div>
+    </div>`;
+
+  document.getElementById('modalEmailPreview').classList.add('open');
+}
+
+function sendInviteEmail() {
+  const m = pendingInviteInstaller;
+  if (!m) return;
+  const appUrl = 'https://viniciusalbuquerque-ux.github.io/second-brain/';
+  const subject = encodeURIComponent(`Your access to Vinny & Wes Flooring app — Second Brain`);
+  const body = encodeURIComponent(
+`Hey ${m.fname}!
+
+You've been added to the Vinny & Wes Flooring team app (Second Brain).
+
+YOUR LOGIN:
+• Open the app: ${appUrl}
+• Select your profile: ${m.fname}
+• Enter your PIN: ${m.pin}
+
+HOW TO INSTALL ON YOUR PHONE:
+Open the link in Safari (iPhone) or Chrome (Android), tap Share → "Add to Home Screen". The app appears as an icon on your screen.
+
+Questions? Call Vinny directly.
+
+— Vinny & Wes Flooring`
+  );
+  window.location.href = `mailto:${m.email}?subject=${subject}&body=${body}`;
+  closeModal('modalEmailPreview');
+}
+
+// ── INSTALLER DETAIL ──
+function openInstallerDetail(id) {
+  currentInstallerId = id;
+  const m = installers.find(x => x.id === id);
+  if (!m) return;
+  document.getElementById('instDetailName').textContent = `${m.fname} ${m.lname||''}`;
+  document.getElementById('instDetailRole').textContent = m.role;
+  document.getElementById('instDetailPin').textContent = m.pin;
+  document.getElementById('instDetailGrid').innerHTML = `
+    <div><div class="det-lbl">Phone</div><div class="det-val">${m.phone||'—'}</div></div>
+    <div><div class="det-lbl">Email</div><div class="det-val" style="font-size:12px;word-break:break-all;">${m.email||'—'}</div></div>`;
+  document.getElementById('instDetailNotes').textContent = m.notes || 'No notes added.';
+  document.getElementById('instDetailSpecs').innerHTML = m.specs.map(s =>
+    `<span class="spec-tag" style="font-size:12px;padding:4px 10px;">${s}</span>`
+  ).join('');
+  document.getElementById('modalInstallerDetail').classList.add('open');
+}
+
+function resendEmail() {
+  closeModal('modalInstallerDetail');
+  if (currentInstallerId) setTimeout(() => previewEmail(currentInstallerId), 200);
+}
+
+function deleteInstaller() {
+  const m = installers.find(x => x.id === currentInstallerId);
+  if (!m || !confirm(`Remove ${m.fname} from the team?`)) return;
+  installers = installers.filter(x => x.id !== currentInstallerId);
+  delete PROFILES[currentInstallerId];
+  closeModal('modalInstallerDetail');
+  renderTeam();
 }
 
 // ══════════════════════════════════════════
@@ -1016,8 +1593,42 @@ function renderField(){
   document.getElementById('fieldDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
   const aj=jobs.filter(j=>j.status!=='done');
   document.getElementById('fieldJobs').innerHTML=aj.map(j=>{
+    if(!j.photos) j.photos={before:[],after:[]};
     const st=JOB_ST.find(s=>s.id===j.status);
-    return `<div class="field-job"><div class="field-job-top"><div><div style="font-family:var(--F);font-weight:700;font-size:14.5px;">${j.client}</div><div style="font-size:11.5px;color:var(--text2);margin-top:2px;">${j.service} · ${j.size}</div><div style="font-size:11.5px;color:var(--text3);margin-top:1px;">📍 ${j.address}</div></div><span class="job-status-pill" style="background:rgba(255,255,255,.04);color:${st?.color};">${st?.label}</span></div><div class="field-job-body"><div style="font-family:var(--FM);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;">Checklist · 👷 ${j.crew}</div><div class="field-checklist">${CL.map((item,i)=>`<div class="field-check ${j.checklist[i]?'done':''}" onclick="toggleCheck(${j.id},${i})"><div class="field-check-box">${j.checklist[i]?'✓':''}</div><span class="field-check-label">${item}</span></div>`).join('')}</div><div class="prog-wrap" style="margin-top:10px;"><div class="prog-bar" style="width:${Math.round(Object.values(j.checklist).filter(Boolean).length/CL.length*100)}%"></div></div></div></div>`;
+    const beforeCount=j.photos.before.length;
+    const afterCount=j.photos.after.length;
+    return `<div class="field-job">
+      <div class="field-job-top">
+        <div>
+          <div style="font-weight:700;font-size:14.5px;">${j.client}</div>
+          <div style="font-size:11.5px;color:var(--text2);margin-top:2px;">${j.service} · ${j.size}</div>
+          <div style="font-size:11.5px;color:var(--text3);margin-top:1px;">📍 ${j.address}</div>
+        </div>
+        <span class="job-status-pill" style="background:rgba(255,255,255,.04);color:${st?.color};">${st?.label}</span>
+      </div>
+      <div class="field-job-body">
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;">Checklist · 👷 ${j.crew}</div>
+        <div class="field-checklist">${CL.map((item,i)=>`
+          <div class="field-check ${j.checklist[i]?'done':''}" onclick="toggleCheck(${j.id},${i})">
+            <div class="field-check-box">${j.checklist[i]?'✓':''}</div>
+            <span class="field-check-label">${item}</span>
+          </div>`).join('')}
+        </div>
+        <div class="prog-wrap" style="margin-top:10px;margin-bottom:14px;">
+          <div class="prog-bar" style="width:${Math.round(Object.values(j.checklist).filter(Boolean).length/CL.length*100)}%"></div>
+        </div>
+        <!-- Photo upload -->
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Job Photos</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <button onclick="currentJobId=${j.id};triggerFieldPhoto(${j.id},'before')" style="padding:10px;border-radius:8px;border:2px dashed ${beforeCount?'#1a5aaa':'var(--border)'};background:${beforeCount?'rgba(26,90,170,.06)':'var(--surface2)'};color:${beforeCount?'#1a5aaa':'var(--text3)'};cursor:pointer;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;">
+            📷 Before ${beforeCount?`(${beforeCount})`:''}
+          </button>
+          <button onclick="currentJobId=${j.id};triggerFieldPhoto(${j.id},'after')" style="padding:10px;border-radius:8px;border:2px dashed ${afterCount?'#3a8a00':'var(--border)'};background:${afterCount?'rgba(58,138,0,.06)':'var(--surface2)'};color:${afterCount?'#3a8a00':'var(--text3)'};cursor:pointer;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;">
+            ✅ After ${afterCount?`(${afterCount})`:''}
+          </button>
+        </div>
+      </div>
+    </div>`;
   }).join('');
 }
 
@@ -1184,11 +1795,11 @@ function useTemplate(tpl){
 // MODALS — LEADS
 // ══════════════════════════════════════════
 let newLeadStatus='new';
-function openNewLead(s){newLeadStatus=s||'new';document.getElementById('modalNewLead').classList.add('open');}
+function openNewLead(s){newLeadStatus=s||'new';populatePartnerSelects();document.getElementById('modalNewLead').classList.add('open');}
 function saveLead(){
   const name=document.getElementById('f_name').value.trim();
   if(!name){alert('Client name required.');return;}
-  leads.unshift({id:Date.now(),name,phone:document.getElementById('f_phone').value,email:document.getElementById('f_email').value,type:document.getElementById('f_type').value,source:document.getElementById('f_source').value,service:document.getElementById('f_service').value,value:parseInt(document.getElementById('f_value').value)||0,address:document.getElementById('f_address').value,notes:document.getElementById('f_notes').value,priority:document.getElementById('f_priority').value,status:newLeadStatus,created:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})});
+  leads.unshift({id:Date.now(),name,phone:document.getElementById('f_phone').value,email:document.getElementById('f_email').value,type:document.getElementById('f_type').value,source:document.getElementById('f_source').value,service:document.getElementById('f_service').value,value:parseInt(document.getElementById('f_value').value)||0,address:document.getElementById('f_address').value,notes:document.getElementById('f_notes').value,priority:document.getElementById('f_priority').value,partnerId:document.getElementById('f_partner').value||null,status:newLeadStatus,created:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})});
   closeModal('modalNewLead');
   ['f_name','f_phone','f_email','f_value','f_address','f_notes'].forEach(id=>document.getElementById(id).value='');
   refreshAll();
@@ -1228,12 +1839,12 @@ function convertToJob(){
 }
 
 // MODALS — JOBS
-function openNewJob(){document.getElementById('modalNewJob').classList.add('open');}
+function openNewJob(){populatePartnerSelects();document.getElementById('modalNewJob').classList.add('open');}
 function saveJob(){
   const client=document.getElementById('j_client').value.trim();if(!client){alert('Client name required.');return;}
   const checks={};CL.forEach((_,i)=>checks[i]=false);
   const val=parseInt(document.getElementById('j_value').value)||0;
-  jobs.unshift({id:Date.now(),client,address:document.getElementById('j_address').value,service:document.getElementById('j_service').value,size:document.getElementById('j_size').value||'—',crew:document.getElementById('j_crew').value,start:document.getElementById('j_start').value||new Date().toISOString().slice(0,10),duration:document.getElementById('j_duration').value,value:val,status:'scheduled',notes:document.getElementById('j_notes').value,checklist:checks,deposit:Math.round(val/2),paid:false});
+  jobs.unshift({id:Date.now(),client,address:document.getElementById('j_address').value,service:document.getElementById('j_service').value,size:document.getElementById('j_size').value||'—',crew:document.getElementById('j_crew').value,start:document.getElementById('j_start').value||new Date().toISOString().slice(0,10),duration:document.getElementById('j_duration').value,value:val,status:'scheduled',notes:document.getElementById('j_notes').value,checklist:checks,deposit:Math.round(val/2),paid:false,partnerId:document.getElementById('j_partner').value||null,photos:{before:[],after:[]}});
   closeModal('modalNewJob');
   ['j_client','j_address','j_size','j_value','j_notes','j_start'].forEach(id=>document.getElementById(id).value='');
   refreshAll();
@@ -1252,15 +1863,318 @@ function openJobDetail(id){
     <div><div class="det-lbl">Crew</div><div class="det-val">${j.crew}</div></div>
     <div><div class="det-lbl">Duration</div><div class="det-val">${j.duration}</div></div>
     <div><div class="det-lbl">Start</div><div class="det-val">${fmtDate(j.start)}</div></div>
+    <div><div class="det-lbl">Value</div><div class="det-val" style="color:var(--accent)">$${j.value.toLocaleString()}</div></div>
+    ${j.partnerId?(()=>{const p=partners.find(x=>x.id===j.partnerId);const ti=p?partnerTypeInfo(p.type):{icon:'🤝'};return `<div style="grid-column:1/-1"><div class="det-lbl">B2B Partner</div><div class="det-val">${p?`${ti.icon} <span onclick="closeModal('modalJobDetail');openPartnerDetail('${p.id}')" style="color:var(--accent);cursor:pointer;">${p.company}</span>`:'—'}</div></div>`;})():''}`;
+  const done=Object.values(j.checklist).filter(Boolean).length;
+  currentJobId=id;
+  const j=jobs.find(x=>x.id===id);if(!j)return;
+  if(!j.photos) j.photos={before:[],after:[]};
+  const isDone=j.status==='done';
+
+  document.getElementById('jd_name').textContent=j.client;
+  document.getElementById('jd_sub').textContent=`${j.service} · ${j.address}`;
+  document.getElementById('jd_notes').textContent=j.notes||'—';
+
+  // Completion banner + invoice btn
+  document.getElementById('jd_completion_banner').classList.toggle('show', isDone);
+  document.getElementById('jd_invoice_btn').style.display = isDone ? 'inline-flex' : 'none';
+  document.getElementById('jd_pdf_btn').style.display = isDone ? 'inline-flex' : 'none';
+
+  document.getElementById('jd_chips').innerHTML=JOB_ST.map(s=>`<div class="s-chip ${j.status===s.id?'sel':''}" onclick="setJobSt(${id},'${s.id}')">${s.label}</div>`).join('');
+  document.getElementById('jd_grid').innerHTML=`
+    <div><div class="det-lbl">Service</div><div class="det-val">${j.service}</div></div>
+    <div><div class="det-lbl">Size</div><div class="det-val">${j.size}</div></div>
+    <div><div class="det-lbl">Crew</div><div class="det-val">${j.crew}</div></div>
+    <div><div class="det-lbl">Duration</div><div class="det-val">${j.duration}</div></div>
+    <div><div class="det-lbl">Start</div><div class="det-val">${fmtDate(j.start)}</div></div>
     <div><div class="det-lbl">Value</div><div class="det-val" style="color:var(--accent)">$${j.value.toLocaleString()}</div></div>`;
   const done=Object.values(j.checklist).filter(Boolean).length;
   document.getElementById('jd_checklist').innerHTML=CL.map((item,i)=>`<div class="field-check ${j.checklist[i]?'done':''}" onclick="toggleCheckModal(${j.id},${i})"><div class="field-check-box">${j.checklist[i]?'✓':''}</div><span class="field-check-label">${item}</span></div>`).join('');
   document.getElementById('jd_prog').style.width=Math.round(done/CL.length*100)+'%';
+
+  // Photo counts badge
+  document.getElementById('jd_photo_counts').innerHTML=`
+    <span class="photo-count-badge" style="background:rgba(26,90,170,.1);color:#1a5aaa;">📷 ${j.photos.before.length}</span>
+    <span class="photo-count-badge" style="background:rgba(58,138,0,.1);color:#3a8a00;">✅ ${j.photos.after.length}</span>`;
+
+  currentPhotoTab='before';
+  renderPhotoTab();
   document.getElementById('modalJobDetail').classList.add('open');
 }
 
+// ── PHOTOS ──
+function switchPhotoTab(tab){
+  currentPhotoTab=tab;
+  document.getElementById('ptab_before').classList.toggle('active', tab==='before');
+  document.getElementById('ptab_before').classList.toggle('before', tab==='before');
+  document.getElementById('ptab_after').classList.toggle('active', tab==='after');
+  document.getElementById('ptab_after').classList.toggle('after', tab==='after');
+  renderPhotoTab();
+}
+
+function renderPhotoTab(){
+  const j=jobs.find(x=>x.id===currentJobId);
+  if(!j||!j.photos) return;
+  const photos=j.photos[currentPhotoTab]||[];
+  const grid=document.getElementById('jd_photo_grid');
+  const isAfter=currentPhotoTab==='after';
+  const accentColor=isAfter?'#3a8a00':'#1a5aaa';
+
+  grid.innerHTML = photos.map((src,i)=>`
+    <div class="photo-thumb" onclick="openLightbox('${src}','${currentPhotoTab}',${i})">
+      <img src="${src}" alt="${currentPhotoTab} ${i+1}"/>
+      <div class="photo-remove" onclick="event.stopPropagation();removePhoto(${i})">✕</div>
+    </div>`).join('') +
+    `<div class="photo-upload-btn" onclick="triggerPhotoUpload()">
+      <span class="upload-icon">${isAfter?'✅':'📷'}</span>
+      <span>Add photo</span>
+      <span style="font-size:9px;opacity:.7;">Camera or gallery</span>
+    </div>`;
+}
+
+function triggerPhotoUpload(){
+  document.getElementById('photoFileInput').click();
+}
+
+function handlePhotoUpload(evt){
+  const j=jobs.find(x=>x.id===currentJobId);
+  if(!j) return;
+  if(!j.photos) j.photos={before:[],after:[]};
+  const files=[...evt.target.files];
+  let loaded=0;
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      j.photos[currentPhotoTab].push(e.target.result);
+      loaded++;
+      if(loaded===files.length){
+        save(); // persist photos to localStorage
+        renderPhotoTab();
+        // Update count badges
+        document.getElementById('jd_photo_counts').innerHTML=`
+          <span class="photo-count-badge" style="background:rgba(26,90,170,.1);color:#1a5aaa;">📷 ${j.photos.before.length}</span>
+          <span class="photo-count-badge" style="background:rgba(58,138,0,.1);color:#3a8a00;">✅ ${j.photos.after.length}</span>`;
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+  evt.target.value='';
+}
+
+function removePhoto(idx){
+  const j=jobs.find(x=>x.id===currentJobId);
+  if(!j||!confirm('Remove this photo?')) return;
+  j.photos[currentPhotoTab].splice(idx,1);
+  renderPhotoTab();
+}
+
+function openLightbox(src,tab,idx){
+  document.getElementById('lightboxImg').src=src;
+  document.getElementById('lightboxLabel').textContent=tab==='before'?`Before · Photo ${idx+1}`:`After · Photo ${idx+1}`;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+// Also add photo upload to Field View
+function triggerFieldPhoto(jobId, tab){
+  currentJobId=jobId;
+  currentPhotoTab=tab;
+  document.getElementById('photoFileInput').click();
+}
+
+// ── INVOICE ──
+function setJobSt(id,s){
+  const j=jobs.find(x=>x.id===id);
+  if(!j) return;
+  j.status=s;
+  // Show dashboard alert when job is marked done
+  if(s==='done'){
+    const alert=document.getElementById('dashCompletionAlert');
+    const title=document.getElementById('dashAlertTitle');
+    title.textContent=`🎉 ${j.client}'s job completed — ready to invoice!`;
+    alert.classList.add('show');
+  }
+  openJobDetail(id);
+  refreshAll();
+}
+
+function generateInvoiceSummary(){
+  const j=jobs.find(x=>x.id===currentJobId);
+  if(!j) return;
+  const tax=j.value*0.07;
+  const total=j.value+tax;
+  const bal=total-j.deposit;
+  const dateStr=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+
+  document.getElementById('invoiceSummaryContent').innerHTML=`
+    <div class="invoice-row"><span>CLIENT</span><span class="val">${j.client}</span></div>
+    <div class="invoice-row"><span>DATE</span><span class="val">${dateStr}</span></div>
+    <div class="invoice-row"><span>SERVICE</span><span class="val">${j.service}</span></div>
+    <div class="invoice-row"><span>SIZE</span><span class="val">${j.size}</span></div>
+    <div class="invoice-row"><span>ADDRESS</span><span class="val">${j.address}</span></div>
+    <div class="invoice-row"><span>CREW</span><span class="val">${j.crew}</span></div>
+    <div class="invoice-row"><span>&nbsp;</span><span></span></div>
+    <div class="invoice-row"><span>SUBTOTAL</span><span class="val">$${j.value.toLocaleString()}</span></div>
+    <div class="invoice-row"><span>TAX (7%)</span><span class="val">$${tax.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>
+    <div class="invoice-row"><span>DEPOSIT PAID</span><span class="val" style="color:#0a7a5a;">-$${j.deposit.toLocaleString()}</span></div>
+    <div class="invoice-row total"><span>BALANCE DUE</span><span class="val">$${bal.toLocaleString('en-US',{minimumFractionDigits:2})}</span></div>`;
+
+  document.getElementById('invoicePaymentBtns').innerHTML=`
+    <button class="btn btn-ghost btn-sm" onclick="markJobPaid(${j.id})" ${j.paid?'style="opacity:.4;pointer-events:none;"':''}>
+      ${j.paid?'✅ Paid':'Mark as Paid'}
+    </button>`;
+
+  closeModal('modalJobDetail');
+  document.getElementById('modalInvoice').classList.add('open');
+}
+
+function markJobPaid(id){
+  const j=jobs.find(x=>x.id===id);
+  if(j){ j.paid=true; generateInvoiceSummary(); refreshAll();}
+}
+
+function copyInvoiceSummary(){
+  const el=document.getElementById('invoiceSummaryContent');
+  const text=[...el.querySelectorAll('.invoice-row')].map(r=>{
+    const cells=[...r.querySelectorAll('span')];
+    return cells.map(c=>c.textContent.trim()).join('   ');
+  }).join('\n');
+  navigator.clipboard.writeText(text).then(()=>alert('✅ Copied to clipboard!')).catch(()=>alert('Select the text manually to copy.'));
+}
+
+function openQuickBooks(){
+  window.open('https://app.qbo.intuit.com','_blank');
+}
+
+function generateJobPDF(){
+  const j=jobs.find(x=>x.id===currentJobId);
+  if(!j) return;
+  if(!j.photos) j.photos={before:[],after:[]};
+
+  const dateStr=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const completedDate=new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  const tax=j.value*0.07;
+  const total=j.value+tax;
+  const bal=total-j.deposit;
+
+  // Checklist HTML
+  const checkHTML=CL.map((item,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #f0f3f0;">
+      <div style="width:16px;height:16px;border-radius:4px;border:2px solid ${j.checklist[i]?'#3a8a00':'#dde3dd'};background:${j.checklist[i]?'#3a8a00':'transparent'};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        ${j.checklist[i]?'<span style="color:#fff;font-size:10px;font-weight:700;">✓</span>':''}
+      </div>
+      <span style="font-size:12px;color:${j.checklist[i]?'#1a221a':'#8a9e8a'};">${item}</span>
+    </div>`).join('');
+
+  // Before photos HTML
+  const beforePhotos=j.photos.before.slice(0,4);
+  const afterPhotos=j.photos.after.slice(0,4);
+
+  const photoGridHTML=(photos,label,color)=> photos.length ? `
+    <div style="margin-bottom:16px;">
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:${color};margin-bottom:8px;">${label} (${photos.length})</div>
+      <div style="display:grid;grid-template-columns:repeat(${Math.min(photos.length,2)},1fr);gap:8px;">
+        ${photos.map(src=>`<img src="${src}" style="width:100%;border-radius:8px;object-fit:cover;aspect-ratio:4/3;border:1px solid #dde3dd;" />`).join('')}
+      </div>
+    </div>` : '';
+
+  const hasPhotos = beforePhotos.length || afterPhotos.length;
+
+  const html=`<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+  <title>Job Report — ${j.client}</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:-apple-system,'Segoe UI',sans-serif;font-size:13px;color:#1a221a;background:#fff;padding:40px;max-width:720px;margin:0 auto;}
+    @media print{body{padding:20px;}@page{margin:15mm;size:A4;}}
+  </style>
+  </head><body>
+
+  <!-- HEADER -->
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;padding-bottom:20px;border-bottom:3px solid #3a8a00;margin-bottom:28px;">
+    <div>
+      <div style="font-size:24px;font-weight:800;color:#3a8a00;letter-spacing:-.5px;margin-bottom:2px;">🧠 Second Brain</div>
+      <div style="font-size:9px;color:#8a9e8a;letter-spacing:2px;text-transform:uppercase;">Vinny &amp; Wes Flooring · Licensed &amp; Insured</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:18px;font-weight:700;color:#1a221a;">JOB REPORT</div>
+      <div style="font-size:11px;color:#8a9e8a;margin-top:3px;">${dateStr}</div>
+      <div style="display:inline-block;margin-top:6px;background:#f0f9f0;border:1.5px solid #3a8a00;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:600;color:#3a8a00;">✅ Completed</div>
+    </div>
+  </div>
+
+  <!-- CLIENT INFO -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+    <div style="background:#f4f6f4;border-radius:10px;padding:16px;">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8a9e8a;margin-bottom:8px;">Client</div>
+      <div style="font-size:16px;font-weight:700;margin-bottom:4px;">${j.client}</div>
+      <div style="font-size:12px;color:#4a5e4a;line-height:1.5;">📍 ${j.address}</div>
+    </div>
+    <div style="background:#f4f6f4;border-radius:10px;padding:16px;">
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8a9e8a;margin-bottom:8px;">Job Details</div>
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:12px;"><strong>Service:</strong> ${j.service}</div>
+        <div style="font-size:12px;"><strong>Size:</strong> ${j.size}</div>
+        <div style="font-size:12px;"><strong>Crew:</strong> 👷 ${j.crew}</div>
+        <div style="font-size:12px;"><strong>Start:</strong> ${fmtDate(j.start)}</div>
+        <div style="font-size:12px;"><strong>Duration:</strong> ${j.duration}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINANCIALS -->
+  <div style="background:#f4f6f4;border-radius:10px;padding:16px;margin-bottom:24px;">
+    <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8a9e8a;margin-bottom:12px;">Financial Summary</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;">
+      <div style="background:#fff;border-radius:8px;padding:12px;border:1px solid #dde3dd;">
+        <div style="font-size:9px;color:#8a9e8a;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">Total Value</div>
+        <div style="font-size:18px;font-weight:800;color:#3a8a00;">$${total.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:12px;border:1px solid #dde3dd;">
+        <div style="font-size:9px;color:#8a9e8a;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">Deposit</div>
+        <div style="font-size:18px;font-weight:800;color:#0a7a5a;">$${j.deposit.toLocaleString()}</div>
+      </div>
+      <div style="background:#fff;border-radius:8px;padding:12px;border:${j.paid?'1px solid #3a8a00':'1px solid #dde3dd'};">
+        <div style="font-size:9px;color:#8a9e8a;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px;">Balance Due</div>
+        <div style="font-size:18px;font-weight:800;color:${j.paid?'#3a8a00':'#b02020'};">${j.paid?'PAID':'$'+bal.toLocaleString('en-US',{minimumFractionDigits:2})}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div style="margin-bottom:24px;">
+    <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8a9e8a;margin-bottom:10px;font-weight:600;">Execution Checklist</div>
+    ${checkHTML}
+  </div>
+
+  ${hasPhotos ? `
+  <!-- PHOTOS -->
+  <div style="margin-bottom:24px;">
+    <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8a9e8a;margin-bottom:12px;font-weight:600;">Job Photos</div>
+    ${photoGridHTML(beforePhotos,'📷 Before','#1a5aaa')}
+    ${photoGridHTML(afterPhotos,'✅ After','#3a8a00')}
+  </div>` : ''}
+
+  ${j.notes ? `
+  <!-- NOTES -->
+  <div style="background:#fffbf0;border:1px solid #f0e8c0;border-radius:8px;padding:14px;margin-bottom:24px;">
+    <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#8a9e8a;margin-bottom:6px;font-weight:600;">Notes</div>
+    <div style="font-size:12.5px;color:#4a5e4a;line-height:1.6;">${j.notes}</div>
+  </div>` : ''}
+
+  <!-- FOOTER -->
+  <div style="border-top:1px solid #dde3dd;padding-top:16px;text-align:center;">
+    <div style="font-size:10.5px;color:#8a9e8a;">Vinny &amp; Wes Flooring · Second Brain OS · Thank you for your business!</div>
+  </div>
+
+  <script>window.onload=function(){window.print();}<\/script>
+  </body></html>`;
+
+  const w=window.open('','_blank','width=800,height=1100');
+  w.document.write(html);
+  w.document.close();
+}
+
 function toggleCheckModal(jid,idx){const j=jobs.find(x=>x.id===jid);if(j){j.checklist[idx]=!j.checklist[idx];openJobDetail(jid);refreshAll();}}
-function setJobSt(id,s){const j=jobs.find(x=>x.id===id);if(j){j.status=s;openJobDetail(id);refreshAll();}}
 function deleteJob(){if(!confirm('Delete?'))return;jobs=jobs.filter(j=>j.id!==currentJobId);closeModal('modalJobDetail');refreshAll();}
 
 // ══════════════════════════════════════════
@@ -1272,6 +2186,7 @@ function toggleSidebar(){document.getElementById('sidebar').classList.toggle('op
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('mobOverlay').classList.remove('show');}
 
 function refreshAll(){
+  save(); // persist all changes to localStorage
   renderStats();
   renderPipeline('dashPipe',4,'all');
   renderDashJobs();
@@ -1285,6 +2200,7 @@ function refreshAll(){
     if(id==='team')renderTeam();
     if(id==='field')renderField();
     if(id==='finance')renderFinance();
+    if(id==='partners')renderPartners();
     if(id==='messages')renderMessages();
   }
 }
@@ -1303,58 +2219,85 @@ let currentProfile = null;
 let selectedProfileKey = null;
 let pinEntry = '';
 
-const OWNER_ONLY_NAVS = ['pipeline','leads','estimates','jobs','team','finance','messages'];
-
-function selectProfile(key) {
-  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('pc-' + key).classList.add('selected');
-  selectedProfileKey = key;
-  pinEntry = '';
-  updatePinDisplay();
-  document.getElementById('pinError').textContent = '';
-  document.getElementById('pinSection').style.display = 'block';
-}
+const OWNER_ONLY_NAVS = ['pipeline','leads','estimates','jobs','team','finance','partners','messages'];
 
 function pinInput(digit) {
   if (pinEntry.length >= 4) return;
   pinEntry += digit;
-  updatePinDisplay();
-  if (pinEntry.length === 4) {
-    setTimeout(checkPin, 150);
-  }
+  updatePinDots();
+  if (pinEntry.length === 4) setTimeout(submitLogin, 200);
 }
 
 function pinBack() {
   pinEntry = pinEntry.slice(0, -1);
-  updatePinDisplay();
+  updatePinDots();
 }
 
-function cancelPin() {
+function clearLogin() {
   pinEntry = '';
-  selectedProfileKey = null;
-  document.getElementById('pinSection').style.display = 'none';
-  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
+  updatePinDots();
+  document.getElementById('loginError').textContent = '';
 }
 
-function updatePinDisplay() {
-  const filled = pinEntry.length;
-  const dots = ['●','●','●','●'].map((d,i) => i < filled
-    ? `<span style="color:var(--accent)">●</span>`
-    : `<span style="color:var(--text3)">○</span>`
-  ).join(' ');
-  document.getElementById('pinDisplay').innerHTML = dots;
-}
-
-function checkPin() {
-  const p = PROFILES[selectedProfileKey];
-  if (pinEntry === p.pin) {
-    loginAs(selectedProfileKey);
-  } else {
-    document.getElementById('pinError').textContent = 'Wrong PIN. Try again.';
-    pinEntry = '';
-    updatePinDisplay();
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('pd' + i).classList.toggle('filled', i < pinEntry.length);
   }
 }
+
+function submitLogin() {
+  const username = document.getElementById('loginUsername').value.trim().toLowerCase();
+  const errEl = document.getElementById('loginError');
+
+  if (!username) {
+    errEl.textContent = 'Please enter your username.';
+    document.getElementById('loginUsername').focus();
+    pinEntry = ''; updatePinDots();
+    return;
+  }
+  if (pinEntry.length < 4) {
+    errEl.textContent = 'Please enter your 4-digit PIN.';
+    return;
+  }
+
+  // Match username against all profiles (case-insensitive)
+  const matchKey = Object.keys(PROFILES).find(k =>
+    PROFILES[k].name.toLowerCase() === username ||
+    k.toLowerCase() === username
+  );
+
+  if (!matchKey) {
+    errEl.textContent = 'Username not found. Check spelling and try again.';
+    pinEntry = ''; updatePinDots();
+    return;
+  }
+
+  const p = PROFILES[matchKey];
+  if (pinEntry !== p.pin) {
+    errEl.textContent = 'Wrong PIN. Try again.';
+    pinEntry = ''; updatePinDots();
+    // shake animation
+    const card = document.querySelector('.login-card');
+    card.style.animation = 'shake .3s ease';
+    setTimeout(() => card.style.animation = '', 400);
+    return;
+  }
+
+  errEl.textContent = '';
+  loginAs(matchKey);
+}
+
+// Allow Enter key on username field to focus PIN (just UX nicety)
+document.addEventListener('DOMContentLoaded', () => {
+  const u = document.getElementById('loginUsername');
+  if (u) u.addEventListener('keydown', e => {
+    if (e.key === 'Enter') e.target.blur();
+  });
+});
+
+function cancelPin() {} // kept for compatibility
+function selectProfile() {} // kept for compatibility
+function updatePinDisplay() {} // kept for compatibility
 
 function loginAs(key) {
   currentProfile = key;
@@ -1402,10 +2345,9 @@ function logout() {
   currentProfile = null;
   selectedProfileKey = null;
   pinEntry = '';
-  document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('pinSection').style.display = 'none';
-  document.getElementById('pinError').textContent = '';
-  updatePinDisplay();
+  document.getElementById('loginUsername').value = '';
+  document.getElementById('loginError').textContent = '';
+  updatePinDots();
   const ls = document.getElementById('loginScreen');
   ls.style.opacity = '0';
   ls.style.display = 'flex';
@@ -1502,12 +2444,446 @@ function downloadPDF() {
 }
 
 // ══════════════════════════════════════════
-// INIT
 // ══════════════════════════════════════════
+// PARTNERS — B2B
+// ══════════════════════════════════════════
+let currentPartnerId = null;
+let partnerFilter = 'all';
+
+const PARTNER_TYPE_INFO = {
+  'Builder':           {icon:'🏗️', css:'builder',  badge:'type-builder'},
+  'Interior Designer': {icon:'🎨', css:'designer', badge:'type-designer'},
+  'Flooring Company':  {icon:'🪵', css:'flooring', badge:'type-flooring'},
+  'Property Manager':  {icon:'🏢', css:'property', badge:'type-property'},
+  'Other':             {icon:'🤝', css:'other',    badge:'type-other'},
+};
+
+function partnerTypeInfo(type){ return PARTNER_TYPE_INFO[type] || PARTNER_TYPE_INFO['Other']; }
+
+function partnerJobStats(partnerId){
+  const linked = jobs.filter(j => j.partnerId === partnerId);
+  const revenue = linked.reduce((s,j) => s+j.value, 0);
+  const active  = linked.filter(j => j.status !== 'done').length;
+  const last    = linked.sort((a,b) => b.id-a.id)[0];
+  return { count: linked.length, revenue, active, last };
+}
+
+function renderPartners(){
+  // Stats row
+  const totalRevenue = partners.reduce((s,p) => s + partnerJobStats(p.id).revenue, 0);
+  const totalJobs    = jobs.filter(j => j.partnerId).length;
+  const active       = partners.length;
+  document.getElementById('partnerStats').innerHTML = `
+    <div class="stat g"><div class="stat-lbl">Partners</div><div class="stat-val">${active}</div><div class="stat-sub">active relationships</div></div>
+    <div class="stat t"><div class="stat-lbl">B2B Jobs</div><div class="stat-val">${totalJobs}</div><div class="stat-sub">from partners</div></div>
+    <div class="stat o"><div class="stat-lbl">B2B Revenue</div><div class="stat-val">$${Math.round(totalRevenue/1000)}K</div><div class="stat-sub">total volume</div></div>
+    <div class="stat b"><div class="stat-lbl">Avg per Partner</div><div class="stat-val">${active?'$'+Math.round(totalRevenue/active/1000)+'K':'—'}</div><div class="stat-sub">lifetime value</div></div>`;
+
+  // Grid
+  const filtered = partnerFilter==='all' ? partners : partners.filter(p=>p.type===partnerFilter);
+  const grid = document.getElementById('partnerGrid');
+
+  if(!filtered.length){
+    grid.innerHTML=`<div class="empty" style="grid-column:1/-1;"><div class="empty-icon">🤝</div><div class="empty-title">No partners yet</div><div style="font-size:12px;margin-top:4px;">Add your first B2B partner to get started</div></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const ti = partnerTypeInfo(p.type);
+    const stats = partnerJobStats(p.id);
+    return `
+    <div class="partner-card ${ti.css}" onclick="openPartnerDetail('${p.id}')">
+      <div class="partner-card-top">
+        <div class="partner-logo" style="background:var(--surface2);">${ti.icon}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="partner-name">${p.company}</div>
+          <span class="partner-type-badge ${ti.badge}">${p.type}</span>
+          ${p.contact?`<div class="partner-contact">👤 ${p.contact}${p.title?' · '+p.title:''}</div>`:''}
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openPartnerDetail('${p.id}')" style="flex-shrink:0;">···</button>
+      </div>
+      <div class="partner-metrics">
+        <div class="partner-metric"><div class="partner-metric-val">${stats.count}</div><div class="partner-metric-lbl">Jobs</div></div>
+        <div class="partner-metric"><div class="partner-metric-val">$${Math.round(stats.revenue/1000)||0}K</div><div class="partner-metric-lbl">Revenue</div></div>
+        <div class="partner-metric"><div class="partner-metric-val">${stats.active}</div><div class="partner-metric-lbl">Active</div></div>
+      </div>
+      <div class="partner-tags">
+        ${p.terms?`<span class="partner-tag">📋 ${p.terms}</span>`:''}
+        ${p.discount?`<span class="partner-tag">🏷 ${p.discount}</span>`:''}
+        ${p.phone?`<span class="partner-tag">📞 ${p.phone}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterPartners(el, f){
+  document.querySelectorAll('#partnerTabs .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  partnerFilter = f;
+  renderPartners();
+}
+
+// ── ADD PARTNER ──
+function openAddPartner(){
+  ['p_company','p_contact','p_title','p_phone','p_email','p_website','p_discount','p_notes'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('p_type').value='Builder';
+  document.getElementById('p_terms').value='';
+  document.getElementById('modalAddPartner').classList.add('open');
+}
+
+function savePartner(){
+  const company=document.getElementById('p_company').value.trim();
+  if(!company){alert('Company name is required.');return;}
+  const p={
+    id:'p'+Date.now(),
+    company,
+    type:document.getElementById('p_type').value,
+    contact:document.getElementById('p_contact').value.trim(),
+    title:document.getElementById('p_title').value.trim(),
+    phone:document.getElementById('p_phone').value.trim(),
+    email:document.getElementById('p_email').value.trim(),
+    website:document.getElementById('p_website').value.trim(),
+    terms:document.getElementById('p_terms').value,
+    discount:document.getElementById('p_discount').value.trim(),
+    notes:document.getElementById('p_notes').value.trim(),
+  };
+  partners.unshift(p);
+  closeModal('modalAddPartner');
+  save();
+  renderPartners();
+  populatePartnerSelects();
+}
+
+// ── PARTNER DETAIL ──
+function openPartnerDetail(id){
+  currentPartnerId=id;
+  const p=partners.find(x=>x.id===id); if(!p) return;
+  const ti=partnerTypeInfo(p.type);
+  const stats=partnerJobStats(p.id);
+
+  document.getElementById('pd_name').textContent=p.company;
+  document.getElementById('pd_type').innerHTML=`<span class="partner-type-badge ${ti.badge}">${ti.icon} ${p.type}</span>`;
+
+  document.getElementById('pd_metrics').innerHTML=`
+    <div class="pd-metric"><div class="pd-metric-val">${stats.count}</div><div class="pd-metric-lbl">Total Jobs</div></div>
+    <div class="pd-metric"><div class="pd-metric-val">$${stats.revenue.toLocaleString()}</div><div class="pd-metric-lbl">Total Revenue</div></div>
+    <div class="pd-metric"><div class="pd-metric-val">${stats.active}</div><div class="pd-metric-lbl">Active Now</div></div>`;
+
+  document.getElementById('pd_contact').innerHTML=`
+    <div><div class="det-lbl">Contact</div><div class="det-val">${p.contact||'—'}</div></div>
+    <div><div class="det-lbl">Title</div><div class="det-val">${p.title||'—'}</div></div>
+    <div><div class="det-lbl">Phone</div><div class="det-val">${p.phone||'—'}</div></div>
+    <div><div class="det-lbl">Email</div><div class="det-val" style="font-size:12px;word-break:break-all;">${p.email||'—'}</div></div>
+    <div><div class="det-lbl">Website</div><div class="det-val">${p.website||'—'}</div></div>`;
+
+  const termsText=[p.terms,p.discount].filter(Boolean).join(' · ') || 'Standard terms';
+  document.getElementById('pd_terms').textContent=termsText;
+  document.getElementById('pd_notes').textContent=p.notes||'No notes.';
+
+  // Linked jobs
+  const linked=jobs.filter(j=>j.partnerId===id);
+  document.getElementById('pd_jobs').innerHTML=linked.length
+    ? linked.map(j=>{
+        const st=JOB_ST.find(s=>s.id===j.status);
+        return `<div class="job-card" onclick="closeModal('modalPartnerDetail');openJobDetail(${j.id})" style="padding:10px 12px;">
+          <div class="job-status-bar" style="background:${st?.color||'var(--border)'}"></div>
+          <div class="job-body">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="font-weight:600;font-size:13px;">${j.client}</div>
+              <span class="job-status-pill" style="background:rgba(0,0,0,.04);color:${st?.color};">${st?.label}</span>
+            </div>
+            <div style="font-size:11.5px;color:var(--text2);">${j.service} · ${j.size} · $${j.value.toLocaleString()}</div>
+          </div>
+        </div>`;
+      }).join('')
+    : `<div style="font-size:12.5px;color:var(--text3);padding:10px;">No jobs linked yet. Create a lead or job and select this partner.</div>`;
+
+  document.getElementById('modalPartnerDetail').classList.add('open');
+}
+
+function deletePartner(){
+  const p=partners.find(x=>x.id===currentPartnerId);
+  if(!p||!confirm(`Remove ${p.company} from partners?`)) return;
+  partners=partners.filter(x=>x.id!==currentPartnerId);
+  // Unlink jobs
+  jobs.forEach(j=>{ if(j.partnerId===currentPartnerId) delete j.partnerId; });
+  closeModal('modalPartnerDetail');
+  save();
+  renderPartners();
+  populatePartnerSelects();
+}
+
+function newLeadFromPartner(){
+  const p=partners.find(x=>x.id===currentPartnerId);
+  closeModal('modalPartnerDetail');
+  openNewLead();
+  setTimeout(()=>{
+    if(p){
+      document.getElementById('f_name').value=p.company+' — ';
+      document.getElementById('f_type').value='builder';
+      populatePartnerSelects();
+      document.getElementById('f_partner').value=p.id;
+    }
+  },100);
+}
+
+// ── POPULATE PARTNER SELECTS in Lead/Job modals ──
+function populatePartnerSelects(){
+  ['f_partner','j_partner'].forEach(selId=>{
+    const sel=document.getElementById(selId); if(!sel) return;
+    const val=sel.value;
+    sel.innerHTML=`<option value="">— Direct / No partner —</option>`
+      +partners.map(p=>`<option value="${p.id}">${p.company} (${p.type})</option>`).join('');
+    sel.value=val;
+  });
+}
+  try {
+    let total=0;
+    Object.values(STORAGE_KEYS).forEach(k=>{
+      const v=localStorage.getItem(k);
+      if(v) total+=v.length;
+    });
+    const kb=Math.round(total/1024);
+    const mb=(kb/1024).toFixed(1);
+    const pct=Math.round(kb/5120*100); // rough 5MB limit
+    const color=pct>80?'#b02020':pct>50?'#c05a00':'var(--text3)';
+    const el=document.getElementById('storageUsed');
+    if(el) el.innerHTML=`<span style="color:${color};">💾 ${kb>1024?mb+'MB':kb+'KB'} / ~5MB</span>`;
+  } catch(e){}
+}
+
+function clearAllData(){
+  if(!confirm('Reset ALL data to defaults?\n\nThis will delete all leads, jobs, installers and photos you have added. This cannot be undone.')) return;
+  Object.values(STORAGE_KEYS).forEach(k=>localStorage.removeItem(k));
+  location.reload();
+}
+
 renderStats();
 renderPipeline('dashPipe',4,'all');
 renderDashJobs();
 document.getElementById('j_start').value=new Date().toISOString().slice(0,10);
+syncInstallerProfiles();
+populatePartnerSelects();
+updateStorageIndicator();
 </script>
-</body>
-</html>
+<!-- ADD PARTNER MODAL -->
+<div class="overlay" id="modalAddPartner">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-head"><div class="modal-title">Add B2B Partner</div><button class="modal-close" onclick="closeModal('modalAddPartner')">✕</button></div>
+    <div class="modal-body">
+      <div class="fr"><label>Company Name *</label><input type="text" id="p_company" placeholder="Ex: Silva Construction"/></div>
+      <div class="fr"><label>Type</label>
+        <select id="p_type">
+          <option>Builder</option>
+          <option>Flooring Company</option>
+          <option>Interior Designer</option>
+          <option>Property Manager</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="fr2">
+        <div><label>Contact Name</label><input type="text" id="p_contact" placeholder="Ex: John Silva"/></div>
+        <div><label>Title / Role</label><input type="text" id="p_title" placeholder="Ex: Project Manager"/></div>
+      </div>
+      <div class="fr2">
+        <div><label>Phone</label><input type="tel" id="p_phone" placeholder="(305) 555-0000"/></div>
+        <div><label>Email</label><input type="email" id="p_email" placeholder="john@silva.com"/></div>
+      </div>
+      <div class="fr"><label>Website</label><input type="text" id="p_website" placeholder="www.silvaconst.com"/></div>
+      <div class="fr"><label>Special Terms</label>
+        <select id="p_terms">
+          <option value="">Standard (due on completion)</option>
+          <option value="Net-15">Net-15</option>
+          <option value="Net-30">Net-30</option>
+          <option value="Net-45">Net-45</option>
+          <option value="50% deposit">50% deposit required</option>
+          <option value="Custom">Custom</option>
+        </select>
+      </div>
+      <div class="fr"><label>Discount / Rate Agreement</label><input type="text" id="p_discount" placeholder="Ex: 10% off labor, $2.00/SF flat rate..."/></div>
+      <div class="fr"><label>Notes</label><textarea id="p_notes" placeholder="How did you meet? Preferences, important info..."></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalAddPartner')">Cancel</button>
+      <button class="btn btn-primary" onclick="savePartner()">Save Partner</button>
+    </div>
+  </div>
+</div>
+
+<!-- PARTNER DETAIL MODAL -->
+<div class="overlay" id="modalPartnerDetail">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="pd_name"></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;" id="pd_type"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalPartnerDetail')">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Metrics -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;" id="pd_metrics"></div>
+      <!-- Contact -->
+      <div class="det-sec"><div class="det-sec-title">Contact</div><div class="det-grid" id="pd_contact"></div></div>
+      <!-- Terms -->
+      <div class="det-sec"><div class="det-sec-title">Terms & Agreement</div><div id="pd_terms" style="font-size:13px;color:var(--text2);"></div></div>
+      <!-- Linked Jobs -->
+      <div class="det-sec">
+        <div class="det-sec-title">Linked Jobs</div>
+        <div id="pd_jobs" style="display:flex;flex-direction:column;gap:7px;"></div>
+      </div>
+      <!-- Notes -->
+      <div class="det-sec"><div class="det-sec-title">Notes</div><div id="pd_notes" style="font-size:12.5px;color:var(--text2);line-height:1.6;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;"></div></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" onclick="deletePartner()">Remove</button>
+      <button class="btn btn-ghost" onclick="closeModal('modalPartnerDetail')">Close</button>
+      <button class="btn btn-primary" onclick="newLeadFromPartner()">＋ New Lead</button>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="modalAddInstaller">
+  <div class="modal" style="max-width:460px;">
+    <div class="modal-head">
+      <div class="modal-title">Add Installer</div>
+      <button class="modal-close" onclick="closeModal('modalAddInstaller')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="fr2">
+        <div><label>First Name *</label><input type="text" id="i_fname" placeholder="Carlos"/></div>
+        <div><label>Last Name</label><input type="text" id="i_lname" placeholder="Mendes"/></div>
+      </div>
+      <div class="fr2">
+        <div><label>Phone</label><input type="tel" id="i_phone" placeholder="(305) 555-0000"/></div>
+        <div><label>Email *</label><input type="email" id="i_email" placeholder="carlos@email.com"/></div>
+      </div>
+      <div class="fr">
+        <label>Role</label>
+        <select id="i_role">
+          <option>Lead Installer</option>
+          <option>Installer</option>
+          <option>Helper</option>
+          <option>Subcontractor</option>
+        </select>
+      </div>
+      <div class="fr">
+        <label>Specialties</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;" id="specCheckboxes">
+          <label style="display:flex;align-items:center;gap:5px;font-family:var(--FB);font-size:12.5px;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer;"><input type="checkbox" value="Hardwood" style="width:auto;background:transparent;border:none;padding:0;" checked> Hardwood</label>
+          <label style="display:flex;align-items:center;gap:5px;font-family:var(--FB);font-size:12.5px;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer;"><input type="checkbox" value="LVP" style="width:auto;background:transparent;border:none;padding:0;"> LVP</label>
+          <label style="display:flex;align-items:center;gap:5px;font-family:var(--FB);font-size:12.5px;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer;"><input type="checkbox" value="Tile" style="width:auto;background:transparent;border:none;padding:0;"> Tile</label>
+          <label style="display:flex;align-items:center;gap:5px;font-family:var(--FB);font-size:12.5px;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer;"><input type="checkbox" value="Carpet" style="width:auto;background:transparent;border:none;padding:0;"> Carpet</label>
+          <label style="display:flex;align-items:center;gap:5px;font-family:var(--FB);font-size:12.5px;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer;"><input type="checkbox" value="Stairs" style="width:auto;background:transparent;border:none;padding:0;"> Stairs</label>
+          <label style="display:flex;align-items:center;gap:5px;font-family:var(--FB);font-size:12.5px;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer;"><input type="checkbox" value="Sand & Finish" style="width:auto;background:transparent;border:none;padding:0;"> Sand & Finish</label>
+          <label style="display:flex;align-items:center;gap:5px;font-family:var(--FB);font-size:12.5px;text-transform:none;letter-spacing:0;color:var(--text);cursor:pointer;"><input type="checkbox" value="Demo" style="width:auto;background:transparent;border:none;padding:0;"> Demo</label>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px;align-items:center;">
+          <input type="text" id="i_custom_spec" placeholder="Add custom specialty..." style="flex:1;font-size:12.5px;" onkeydown="if(event.key==='Enter'){event.preventDefault();addCustomSpec();}"/>
+          <button class="btn btn-ghost btn-sm" onclick="addCustomSpec()" type="button">＋ Add</button>
+        </div>
+        <div id="customSpecTags" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;"></div>
+      </div>
+      <div class="fr">
+        <label>Notes / Observations</label>
+        <textarea id="i_notes" placeholder="Ex: Only available Mon–Fri. Speaks Portuguese. Has own tools. Subcontractor — send 1099..." style="min-height:80px;"></textarea>
+      </div>
+      <div class="fr">
+        <label>Access PIN (4 digits)</label>
+        <input type="text" id="i_pin" placeholder="Ex: 4455" maxlength="4" pattern="[0-9]{4}"/>
+        <div style="font-size:11px;color:var(--text3);margin-top:4px;">They'll use this to log in to the app. Leave blank to auto-generate.</div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalAddInstaller')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveInstaller()">Save &amp; Preview Invite Email</button>
+    </div>
+  </div>
+</div>
+
+<!-- EMAIL PREVIEW MODAL -->
+<div class="overlay" id="modalEmailPreview">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">📧 Invite Email Preview</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px;" id="emailPreviewTo"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalEmailPreview')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0;">
+      <div class="email-preview-wrap">
+        <div class="email-preview-bar">
+          <div class="email-preview-dot" style="background:#f06a6a;"></div>
+          <div class="email-preview-dot" style="background:#f0a86a;"></div>
+          <div class="email-preview-dot" style="background:#3a8a00;"></div>
+          <span style="font-size:11px;color:var(--text3);margin-left:6px;">Email Preview</span>
+        </div>
+        <div class="email-preview-body" id="emailPreviewBody"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalEmailPreview')">Close</button>
+      <button class="btn btn-primary" onclick="sendInviteEmail()">📨 Open in Mail App</button>
+    </div>
+  </div>
+</div>
+
+<!-- INVOICE SUMMARY MODAL -->
+<div class="overlay" id="modalInvoice">
+  <div class="modal" style="max-width:460px;">
+    <div class="modal-head">
+      <div><div class="modal-title">📋 Invoice Summary</div><div style="font-size:11px;color:var(--text3);margin-top:2px;">Copy this info into QuickBooks</div></div>
+      <button class="modal-close" onclick="closeModal('modalInvoice')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="invoice-summary" id="invoiceSummaryContent"></div>
+      <div style="margin-top:14px;display:flex;gap:8px;">
+        <button class="btn btn-ghost" style="flex:1;" onclick="copyInvoiceSummary()">📋 Copy Text</button>
+        <button class="btn btn-primary" style="flex:1;" onclick="openQuickBooks()">🔗 Open QuickBooks</button>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--text3);text-align:center;">
+        After creating invoice in QuickBooks, mark deposit received and balance status below.
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;" id="invoicePaymentBtns"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('modalInvoice')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightboxImg" src="" alt=""/>
+  <div class="lightbox-label" id="lightboxLabel"></div>
+</div>
+<div class="overlay" id="modalInstallerDetail">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-head">
+      <div><div class="modal-title" id="instDetailName"></div><div style="font-size:11px;color:var(--text3);margin-top:2px;" id="instDetailRole"></div></div>
+      <button class="modal-close" onclick="closeModal('modalInstallerDetail')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="det-sec"><div class="det-sec-title">Contact</div><div class="det-grid" id="instDetailGrid"></div></div>
+      <div class="det-sec"><div class="det-sec-title">Specialties</div><div id="instDetailSpecs" style="display:flex;gap:6px;flex-wrap:wrap;"></div></div>
+      <div class="det-sec"><div class="det-sec-title">Notes</div><div id="instDetailNotes" style="font-size:13px;color:var(--text2);line-height:1.6;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;min-height:40px;"></div></div>
+      <div class="det-sec">
+        <div class="det-sec-title">App Access</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;">
+          <div style="flex:1;">
+            <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">Login PIN</div>
+            <div style="font-size:20px;font-weight:700;letter-spacing:6px;color:var(--accent);" id="instDetailPin">••••</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="resendEmail()">📨 Resend Invite</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-danger btn-sm" onclick="deleteInstaller()">Remove</button>
+      <button class="btn btn-ghost" onclick="closeModal('modalInstallerDetail')">Close</button>
+    </div>
+  </div>
+</div>
